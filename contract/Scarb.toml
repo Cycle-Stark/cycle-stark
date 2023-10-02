@@ -1,0 +1,13 @@
+[package]
+name = "cycle_stark"
+version = "0.1.0"
+authors = ["Dalmas Ogembo<dalmas.ogembo@livesoftwaredeveloper.com>"]
+
+[[target.starknet-contract]]
+sierra = true
+casm = true
+
+# See more keys and their definitions at https://docs.swmansion.com/scarb/docs/reference/manifest.html
+[dependencies]
+starknet = "2.2.0"
+snforge_std = { git = "https://github.com/foundry-rs/starknet-foundry.git", tag = "v0.5.0" }
