@@ -1,7 +1,8 @@
 use array::ArrayTrait;
+use starknet::ContractAddress;
+use starknet::get_caller_address;
 
-// s_c -> stark_collective
-// s_h -> stark_hero
+
 
 #[derive(Drop)]
 struct ReceivedStark {
@@ -12,15 +13,15 @@ struct ReceivedStark {
 
 #[derive(Drop)]
 struct StarkHero {
-    id: felt252,
+    id: ContractAddress,
     escrow: felt252,
     is_active: bool,
-    received_starks: Array<ReceivedStark>
+    // received_starks: LegacyMap<felt252, ReceivedStark>
 }
-
-#[derive(Drop)]
+ 
+#[derive(Copy)]
 struct HeroContribution {
-    hero_id: felt252,
+    hero_id: ContractAddress,
     amount: felt252
 }
 
@@ -45,6 +46,7 @@ struct LockedStark {
     amount_locked: felt252
 }
 
+#[starknet::interface]
 trait IStarkCollective {
     fn add_stark_hero(ref self: StarkCollective, s_h: StarkHero);
     fn get_stark_hero(self: @StarkCollective, id: felt252);
@@ -52,6 +54,15 @@ trait IStarkCollective {
     fn check_for_next_hero(self: @StarkCollective);
     fn contribute(ref self: StarkCollective, hero_id: felt252, amount: felt252);
     fn remit(ref self: StarkCollective);
+}
+
+#[starknet::interface]
+trait IStorage<Storage> {
+    fn register_account(ref self: Storage, s_h: StarkHero);
+    fn register_collective(ref self: Storage, s_c: StarkCollective);
+    fn get_stark_collective(self: @Storage, id: felt252);
+    fn lock_new_stark(ref self: Storage, hero_id: felt252, collective_id: felt252, amount: felt252);
+    fn check_if_has_locked(self: @Storage, hero_id: felt252, collective_id: felt252);
 }
 
 
@@ -64,23 +75,29 @@ impl CycleStarkImpl of IStarkCollective {
     fn remit(ref self: StarkCollective) {}
 }
 
-
+#[starknet::contract]
+mod CycleStark{
+#[storage]
+#[derive(Drop)]
 struct Storage {
-    stark_users: Array<StarkHero>,
+    stark_users: LegacyMap<ContractAddress, StarkHero>,
     stark_collectives: Array<StarkCollective>,
     locked_starks: Array<LockedStark>,
 }
 
-trait IStorage {
-    fn register_account(ref self: Storage, s_h: StarkHero);
-    fn register_collective(ref self: Storage, s_c: StarkCollective);
-    fn get_stark_collective(self: @Storage, id: felt252);
-    fn lock_new_stark(ref self: Storage, hero_id: felt252, collective_id: felt252, amount: felt252);
-    fn check_if_has_locked(self: @Storage, hero_id: felt252, collective_id: felt252);
-}
+
 
 impl StorageImpl of IStorage {
-    fn register_account(ref self: Storage, s_h: StarkHero) {}
+    fn register_account(ref self: Storage, s_h: StarkHero) {
+        let hero_ad: ContractAddress = get_caller_address();
+        let hero: StarkHero = StarkHero {
+            id: hero_ad,
+            is_active: true,
+            escrow: 0,
+            received_starks: ArrayTrait::new()
+        };
+self.stark_users.write
+    }
     fn register_collective(ref self: Storage, s_c: StarkCollective) {}
     fn get_stark_collective(self: @Storage, id: felt252) {}
     fn lock_new_stark(
@@ -89,3 +106,4 @@ impl StorageImpl of IStorage {
     fn check_if_has_locked(self: @Storage, hero_id: felt252, collective_id: felt252) {}
 }
 
+}
