@@ -1,0 +1,423 @@
+{
+    "abi": [
+        {
+            "type": "impl",
+            "name": "HelperFunctionsImpl",
+            "interface_name": "cycle_stark::IHelperFunctions"
+        },
+        {
+            "type": "struct",
+            "name": "core::integer::u256",
+            "members": [
+                {
+                    "name": "low",
+                    "type": "core::integer::u128"
+                },
+                {
+                    "name": "high",
+                    "type": "core::integer::u128"
+                }
+            ]
+        },
+        {
+            "type": "enum",
+            "name": "core::bool",
+            "variants": [
+                {
+                    "name": "False",
+                    "type": "()"
+                },
+                {
+                    "name": "True",
+                    "type": "()"
+                }
+            ]
+        },
+        {
+            "type": "struct",
+            "name": "cycle_stark::StarkHero",
+            "members": [
+                {
+                    "name": "id",
+                    "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                    "name": "escrow",
+                    "type": "core::integer::u256"
+                },
+                {
+                    "name": "is_active",
+                    "type": "core::bool"
+                },
+                {
+                    "name": "collectives_count",
+                    "type": "core::integer::u32"
+                }
+            ]
+        },
+        {
+            "type": "interface",
+            "name": "cycle_stark::IHelperFunctions",
+            "items": [
+                {
+                    "type": "function",
+                    "name": "get_heroes_count",
+                    "inputs": [],
+                    "outputs": [
+                        {
+                            "type": "core::integer::u256"
+                        }
+                    ],
+                    "state_mutability": "view"
+                },
+                {
+                    "type": "function",
+                    "name": "get_hero",
+                    "inputs": [
+                        {
+                            "name": "hero_id",
+                            "type": "core::starknet::contract_address::ContractAddress"
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "type": "cycle_stark::StarkHero"
+                        }
+                    ],
+                    "state_mutability": "view"
+                },
+                {
+                    "type": "function",
+                    "name": "get_caller_address",
+                    "inputs": [],
+                    "outputs": [
+                        {
+                            "type": "core::starknet::contract_address::ContractAddress"
+                        }
+                    ],
+                    "state_mutability": "view"
+                },
+                {
+                    "type": "function",
+                    "name": "get_collective_hero",
+                    "inputs": [
+                        {
+                            "name": "collective_id",
+                            "type": "core::integer::u256"
+                        },
+                        {
+                            "name": "index",
+                            "type": "core::integer::u32"
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "type": "core::starknet::contract_address::ContractAddress"
+                        }
+                    ],
+                    "state_mutability": "view"
+                }
+            ]
+        },
+        {
+            "type": "impl",
+            "name": "CycleStarkImpl",
+            "interface_name": "cycle_stark::ICycleStark"
+        },
+        {
+            "type": "struct",
+            "name": "cycle_stark::StarkCollective",
+            "members": [
+                {
+                    "name": "id",
+                    "type": "core::integer::u256"
+                },
+                {
+                    "name": "name",
+                    "type": "core::felt252"
+                },
+                {
+                    "name": "rule_1",
+                    "type": "core::felt252"
+                },
+                {
+                    "name": "rule_2",
+                    "type": "core::felt252"
+                },
+                {
+                    "name": "rule_3",
+                    "type": "core::felt252"
+                },
+                {
+                    "name": "hero_count",
+                    "type": "core::integer::u32"
+                },
+                {
+                    "name": "cycle_amount",
+                    "type": "core::integer::u256"
+                },
+                {
+                    "name": "cycles_count",
+                    "type": "core::integer::u32"
+                },
+                {
+                    "name": "token",
+                    "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                    "name": "start_date",
+                    "type": "core::integer::u64"
+                },
+                {
+                    "name": "owner",
+                    "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                    "name": "active_cycle",
+                    "type": "core::integer::u32"
+                },
+                {
+                    "name": "has_started",
+                    "type": "core::bool"
+                },
+                {
+                    "name": "has_ended",
+                    "type": "core::bool"
+                },
+                {
+                    "name": "current_hero",
+                    "type": "core::starknet::contract_address::ContractAddress"
+                },
+                {
+                    "name": "next_hero",
+                    "type": "core::starknet::contract_address::ContractAddress"
+                }
+            ]
+        },
+        {
+            "type": "struct",
+            "name": "cycle_stark::CollectiveCycle",
+            "members": [
+                {
+                    "name": "id",
+                    "type": "core::integer::u32"
+                },
+                {
+                    "name": "has_ended",
+                    "type": "core::bool"
+                },
+                {
+                    "name": "contributions_count",
+                    "type": "core::integer::u32"
+                },
+                {
+                    "name": "receiver_hero",
+                    "type": "core::starknet::contract_address::ContractAddress"
+                }
+            ]
+        },
+        {
+            "type": "interface",
+            "name": "cycle_stark::ICycleStark",
+            "items": [
+                {
+                    "type": "function",
+                    "name": "register_account",
+                    "inputs": [],
+                    "outputs": [],
+                    "state_mutability": "external"
+                },
+                {
+                    "type": "function",
+                    "name": "register_collective",
+                    "inputs": [
+                        {
+                            "name": "name",
+                            "type": "core::felt252"
+                        },
+                        {
+                            "name": "rule_1",
+                            "type": "core::felt252"
+                        },
+                        {
+                            "name": "rule_2",
+                            "type": "core::felt252"
+                        },
+                        {
+                            "name": "rule_3",
+                            "type": "core::felt252"
+                        },
+                        {
+                            "name": "cycle_amount",
+                            "type": "core::integer::u256"
+                        },
+                        {
+                            "name": "token",
+                            "type": "core::starknet::contract_address::ContractAddress"
+                        }
+                    ],
+                    "outputs": [],
+                    "state_mutability": "external"
+                },
+                {
+                    "type": "function",
+                    "name": "get_stark_collective",
+                    "inputs": [
+                        {
+                            "name": "collective_id",
+                            "type": "core::integer::u256"
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "type": "cycle_stark::StarkCollective"
+                        }
+                    ],
+                    "state_mutability": "view"
+                },
+                {
+                    "type": "function",
+                    "name": "get_collective_cycle",
+                    "inputs": [
+                        {
+                            "name": "collective_id",
+                            "type": "core::integer::u256"
+                        },
+                        {
+                            "name": "cycle_id",
+                            "type": "core::integer::u32"
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "type": "cycle_stark::CollectiveCycle"
+                        }
+                    ],
+                    "state_mutability": "view"
+                },
+                {
+                    "type": "function",
+                    "name": "join_collective",
+                    "inputs": [
+                        {
+                            "name": "collective_id",
+                            "type": "core::integer::u256"
+                        }
+                    ],
+                    "outputs": [],
+                    "state_mutability": "external"
+                },
+                {
+                    "type": "function",
+                    "name": "close_registrations",
+                    "inputs": [
+                        {
+                            "name": "collective_id",
+                            "type": "core::integer::u256"
+                        }
+                    ],
+                    "outputs": [],
+                    "state_mutability": "external"
+                },
+                {
+                    "type": "function",
+                    "name": "lock_new_stark",
+                    "inputs": [
+                        {
+                            "name": "collective_id",
+                            "type": "core::integer::u256"
+                        },
+                        {
+                            "name": "amount",
+                            "type": "core::integer::u256"
+                        }
+                    ],
+                    "outputs": [],
+                    "state_mutability": "external"
+                },
+                {
+                    "type": "function",
+                    "name": "check_if_has_locked",
+                    "inputs": [
+                        {
+                            "name": "collective_id",
+                            "type": "core::integer::u256"
+                        },
+                        {
+                            "name": "hero_id",
+                            "type": "core::starknet::contract_address::ContractAddress"
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "type": "core::integer::u256"
+                        }
+                    ],
+                    "state_mutability": "view"
+                },
+                {
+                    "type": "function",
+                    "name": "start_cycle",
+                    "inputs": [
+                        {
+                            "name": "collective_id",
+                            "type": "core::integer::u256"
+                        }
+                    ],
+                    "outputs": [],
+                    "state_mutability": "external"
+                },
+                {
+                    "type": "function",
+                    "name": "contribute",
+                    "inputs": [
+                        {
+                            "name": "collective_id",
+                            "type": "core::integer::u256"
+                        },
+                        {
+                            "name": "amount",
+                            "type": "core::integer::u256"
+                        }
+                    ],
+                    "outputs": [],
+                    "state_mutability": "external"
+                },
+                {
+                    "type": "function",
+                    "name": "get_receiver_address",
+                    "inputs": [
+                        {
+                            "name": "collective_id",
+                            "type": "core::integer::u256"
+                        }
+                    ],
+                    "outputs": [
+                        {
+                            "type": "core::starknet::contract_address::ContractAddress"
+                        }
+                    ],
+                    "state_mutability": "external"
+                },
+                {
+                    "type": "function",
+                    "name": "remit",
+                    "inputs": [
+                        {
+                            "name": "collective_id",
+                            "type": "core::integer::u256"
+                        }
+                    ],
+                    "outputs": [],
+                    "state_mutability": "external"
+                }
+            ]
+        },
+        {
+            "type": "event",
+            "name": "cycle_stark::CycleStark::Event",
+            "kind": "enum",
+            "variants": []
+        }
+    ]
+}

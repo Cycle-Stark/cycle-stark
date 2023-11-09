@@ -9,5 +9,16 @@ casm = true
 
 # See more keys and their definitions at https://docs.swmansion.com/scarb/docs/reference/manifest.html
 [dependencies]
-starknet = "2.2.0"
-snforge_std = { git = "https://github.com/foundry-rs/starknet-foundry.git", tag = "v0.5.0" }
+starknet = "2.3.0"
+snforge_std = { git = "https://github.com/foundry-rs/starknet-foundry.git", tag = "v0.9.1" }
+
+# current devnet rs seed 3947604072
+[tool.sncast.account1]
+account = "account1"
+accounts-file = "/home/dalmas/.starknet_accounts/starknet_open_zeppelin_accounts.json"
+url = "http://localhost:5050/rpc"
+
+[tool.sncast.account2]
+account = "account2"
+accounts-file = "/home/dalmas/.starknet_accounts/starknet_open_zeppelin_accounts.json"
+url = "http://localhost:5050/rpc"

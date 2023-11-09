@@ -1,0 +1,44 @@
+{
+  "name": "cycle-stark",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@mantine/carousel": "^7.1.5",
+    "@mantine/core": "7.1.5",
+    "@mantine/dates": "^7.1.7",
+    "@mantine/form": "^7.1.5",
+    "@mantine/hooks": "7.1.5",
+    "@mantine/modals": "^7.1.5",
+    "@mantine/notifications": "^7.1.5",
+    "@tabler/icons-react": "^2.40.0",
+    "dayjs": "^1.11.10",
+    "embla-carousel-react": "^8.0.0-rc14",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.17.0",
+    "starknet": "^5.19.5",
+    "starknetkit": "^1.0.12"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "@typescript-eslint/eslint-plugin": "^5.57.1",
+    "@typescript-eslint/parser": "^5.57.1",
+    "@vitejs/plugin-react": "^4.0.0",
+    "eslint": "^8.38.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.3.4",
+    "postcss": "^8.4.24",
+    "postcss-preset-mantine": "1.9.0",
+    "postcss-simple-vars": "^7.0.1",
+    "typescript": "^5.0.2",
+    "vite": "^4.3.2"
+  }
+}
