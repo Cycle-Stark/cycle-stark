@@ -2,12 +2,20 @@ import { Grid, Stack, Title } from "@mantine/core"
 import Collective from "../../components/collectives/Collective"
 import { useEffect } from "react"
 import { contract } from "../../configs/config"
+import { CairoResult, CairoResultVariant, cairo, shortString } from "starknet"
+import BN from "bignumber.js"
 
 const Collectives = () => {
 
     async function callContract() {
-        const res = await contract.get_heroes_count()
-        console.log(res.toString())
+        const res = await contract.get_collectives(1)
+        console.log(res)
+        const result = new CairoResult(CairoResultVariant.Ok, "25604676053229993250954053807560286580137370434497907n")
+        // console.log(result)
+        let large_no = BN("25604676053229993250954053807560286580137370434497907n").toString()
+        console.log(large_no)
+        let r = shortString.decodeShortString("25604676053229993250954053807560286580137370434497907n")
+        console.log(r)
     }
 
     useEffect(() => {

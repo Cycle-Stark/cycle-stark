@@ -10,13 +10,19 @@ casm = true
 # See more keys and their definitions at https://docs.swmansion.com/scarb/docs/reference/manifest.html
 [dependencies]
 starknet = "2.3.0"
-snforge_std = { git = "https://github.com/foundry-rs/starknet-foundry.git", tag = "v0.9.1" }
+snforge_std = { git = "https://github.com/foundry-rs/starknet-foundry.git", tag = "v0.10.1" }
 
-# current devnet rs seed 3947604072
+# current devnet rs seed 3446092628
+
+[[tool.snforge.fork]]
+name = "GoerliFork"
+url = "https://starknet-goerli.infura.io/v3/958e1b411a40480eacb8c0f5d640a8ec"
+block_id.tag = "Latest"
 [tool.sncast.account1]
 account = "account1"
 accounts-file = "/home/dalmas/.starknet_accounts/starknet_open_zeppelin_accounts.json"
 url = "http://localhost:5050/rpc"
+
 
 [tool.sncast.account2]
 account = "account2"

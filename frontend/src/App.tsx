@@ -15,6 +15,7 @@ import Home from "./pages/Home";
 import MyCollectives from "./pages/account/MyCollectives";
 
 export default function App() {
+  // ERC 20 transfer
   return (
     <>
       <BrowserRouter>
