@@ -1,12 +1,37 @@
-import { ActionIcon, Button, Center, Container, Grid, Group, NumberInput, Stack, Text, TextInput, Title, useMantineTheme } from "@mantine/core"
+import { ActionIcon, Button, Center, Container, Grid, Group, LoadingOverlay, MantineTheme, NumberInput, Stack, Text, TextInput, Title, useMantineTheme } from "@mantine/core"
 import { DateTimePicker } from '@mantine/dates';
-import { IconPlus, IconTrash } from "@tabler/icons-react";
-import { ACCOUNT_ADDRESS, CONTRACT_ADDRESS, account, contract } from "../../configs/config";
-import { cairo, BigNumberish, CallData } from "starknet";
+import { IconAlertTriangle, IconInfoCircle, IconPlus, IconTrash } from "@tabler/icons-react";
+import { account, contract } from "../../configs/config";
+import { shortString } from "starknet";
 import { useForm } from "@mantine/form"
+import { useState } from "react";
+import { showNotification } from "@mantine/notifications";
 
-import BN from "bignumber.js"
 
+interface IColorText {
+    theme: MantineTheme,
+    len: number
+}
+
+const ColorText = (props: IColorText) => {
+    const { theme, len } = props
+    function getColor(len: number) {
+        let percent = Math.abs(len / 30 * 100)
+        if (percent >= 100) {
+            return theme.colors.red[6]
+        }
+        else if (percent > 80) {
+            return theme.colors.yellow[6]
+        }
+        else if (percent > 50) {
+            return theme.colors.indigo[6]
+        }
+        return theme.colors.green[6]
+    }
+    return (
+        <Text size="xs" c={getColor(len ?? 0)}>{len ?? 0}/30</Text>
+    )
+}
 
 const RULE = {
     rule: ""
@@ -14,16 +39,20 @@ const RULE = {
 
 const CreateCollective = () => {
 
+    const [loading, setLoading] = useState(false)
     const theme = useMantineTheme()
 
     const form = useForm({
         initialValues: {
             rules: Array(1).fill(RULE),
             name: "",
+            aim: "",
             token: "",
             amt: 0,
             fine: 0,
-            start_date: ""
+            start_date: "",
+            decimals: 0,
+            symbol: "",
         },
         validate: {
             name: value => {
@@ -35,8 +64,27 @@ const CreateCollective = () => {
                 }
                 return null
             },
+            aim: value => {
+                if (value === "") {
+                    return "Enter collective aim"
+                }
+                else if (value.length > 30) {
+                    return "Collective aim should be only 30 characters and below"
+                }
+                return null
+            },
+            symbol: value => {
+                if (value === "") {
+                    return "Enter token symbol"
+                }
+                else if (value.length > 30) {
+                    return "Symbol cannot be more than 30 characters"
+                }
+                return null
+            },
             token: value => value === "" ? "Collective Token address required" : null,
             amt: value => value === 0 ? "Cycle amount is required" : null,
+            decimals: value => value === 0 ? "Decimals are required" : null,
             start_date: value => value === "" ? "Start date is required" : null,
             rules: {
                 rule: value => {
@@ -60,22 +108,12 @@ const CreateCollective = () => {
         form.removeListItem("rules", i)
     }
 
-    // async function registerHero() {
-    //     // contract.connect(account)
-    //     // console.log(contract)
-    //     // console.log(account)
-    //     const myCall = contract.populate('register_account', [])
-    //     const res = await contract.register_account(myCall.calldata, {
-    //         entrypoint: "transfer",
-    //         calldata: CallData.compile({
-    //             recipient: CONTRACT_ADDRESS,
-    //             amount: cairo.uint256(100000n)
-    //         })
-    //     })
-    //     console.log(res)
-    // }
+    const encoder = (str: string) => {
+        return shortString.encodeShortString(str);
+    }
 
     async function registerCollective(data: any) {
+        setLoading(true)
         contract.connect(account)
 
         const rule_1 = data.rules[0].rule
@@ -83,17 +121,29 @@ const CreateCollective = () => {
         const rule_3 = data?.rules.length > 2 ? data.rules[2].rule : ""
 
         // const token: string = '0x048242eca329a05af1909fa79cb1f9a4275ff89b987d405ec7de08f73b85588f'
-        // console.log(cairo.felt(token))
-        const collective_inputs = [data.name, rule_1, rule_2, rule_3, data.amt, data.fine, data?.token, data.start_date.getTime()]
-        const calldata = CallData.compile(collective_inputs)
-        console.log(calldata)
+        const collective_inputs = [encoder(data.name), encoder(rule_1), encoder(rule_2), encoder(rule_3), data.amt, data.fine, data?.token, data.start_date.getTime(), encoder(data.aim), data.decimals, encoder(data.symbol)]
         const myCall = contract.populate('register_collective', collective_inputs)
-        const res = await contract.register_collective(myCall.calldata)
-        console.log(res)
+        contract.register_collective(myCall.calldata).then((_res: any) => {
+            showNotification({
+                title: "Success",
+                message: "You have successfully created a new collective",
+                color: "green",
+                icon: <IconInfoCircle stroke={1.5} />
+            })
+            form.reset()
+        }).catch((_error: any) => {
+            showNotification({
+                title: "Failed!!",
+                message: "Creating a new collective has failed",
+                color: "red",
+                icon: <IconAlertTriangle stroke={1.5} />
+            })
+        }).finally(() => {
+            setLoading(false)
+        })
     }
 
     // async function sendSomeFunds() {
-    //     console.log(account)
     //     const result = await account.execute(
     //         {
     //             contractAddress: ACCOUNT_ADDRESS,
@@ -113,20 +163,6 @@ const CreateCollective = () => {
         registerCollective(data)
     }
 
-    function getColor(len: number) {
-        let percent = Math.abs(len / 30 * 100)
-        if (percent == 100) {
-            return theme.colors.red[6]
-        }
-        else if (percent > 80) {
-            return theme.colors.yellow[6]
-        }
-        else if (percent > 50) {
-            return theme.colors.indigo[6]
-        }
-        return theme.colors.green[6]
-    }
-
 
     const styles = {
         input: {
@@ -139,11 +175,17 @@ const CreateCollective = () => {
     return (
         <Stack>
             <Title order={1} className="custom-title" style={{ textAlign: "center" }}>Register New Collective</Title>
-            <form onSubmit={form.onSubmit((_values) => cerateCollective())}>
+            <form onSubmit={form.onSubmit((_values) => cerateCollective())} style={{ position: "relative" }}>
+                <LoadingOverlay visible={loading} />
                 <Container maw={600}>
                     <Grid>
                         <Grid.Col span={{ md: 12 }}>
-                            <TextInput label={"Collective Name"} radius={'md'} placeholder="STRK Collective" styles={styles} {...form.getInputProps('name')} />
+                            <TextInput label={"Collective Name"} radius={'md'} placeholder="STRK Collective" styles={styles} {...form.getInputProps('name')}
+                                rightSection={<ColorText theme={theme} len={form.values.name.length} />} />
+                        </Grid.Col>
+                        <Grid.Col span={{ md: 12 }}>
+                            <TextInput label={"Collective Aim"} radius={'md'} placeholder="Buy Land for Each other" styles={styles} {...form.getInputProps('aim')}
+                                rightSection={<ColorText theme={theme} len={form.values.aim.length} />} />
                         </Grid.Col>
                         <Grid.Col span={{ md: 12 }}>
                             <Stack>
@@ -152,8 +194,8 @@ const CreateCollective = () => {
                                     form.values.rules.map((_rule: any, i: number) => (
                                         <Grid key={`rule_${i}`}>
                                             <Grid.Col span={{ xs: 10 }}>
-                                                <TextInput label={"Rule # 1."} radius={'md'} placeholder="Less than 30 characters" styles={styles} {...form.getInputProps(`rules.${i}.rule`)}
-                                                    rightSection={<Text size="xs" c={getColor(form.values.rules[i].rule.length ?? 0)}>{form.values.rules[i].rule.length ?? 0}/30</Text>} />
+                                                <TextInput label={`Rule # ${i + 1}.`} radius={'md'} placeholder="Less than 30 characters" styles={styles} {...form.getInputProps(`rules.${i}.rule`)}
+                                                    rightSection={<ColorText theme={theme} len={form.values.rules[i].rule.length} />} />
                                             </Grid.Col>
                                             <Grid.Col span={{ xs: 2 }}>
                                                 <Center className="h-100">
@@ -174,6 +216,12 @@ const CreateCollective = () => {
                             <TextInput label={"Token"} radius={'md'} placeholder="Token Address: 0x00fdkb..." {...form.getInputProps('token')} styles={styles} />
                         </Grid.Col>
                         <Grid.Col span={{ md: 4 }}>
+                            <NumberInput label={"Token Decimals"} hideControls radius={'md'} placeholder="18" {...form.getInputProps('decimals')} styles={styles} />
+                        </Grid.Col>
+                        <Grid.Col span={{ md: 4 }}>
+                            <TextInput label={"Token Symbol"} radius={'md'} placeholder="Token Symbol: ETH" {...form.getInputProps('symbol')} styles={styles} />
+                        </Grid.Col>
+                        <Grid.Col span={{ md: 4 }}>
                             <NumberInput label={"Amount / cycle"} hideControls radius={'md'} placeholder="200 STRK" {...form.getInputProps('amt')} styles={styles} />
                         </Grid.Col>
                         <Grid.Col span={{ md: 4 }}>
@@ -184,7 +232,7 @@ const CreateCollective = () => {
                         </Grid.Col>
                         <Grid.Col span={12}>
                             <Group justify="center" py="lg">
-                                <Button leftSection={<IconPlus stroke={1.5} />} type="submit" size="md" variant="outline" radius={"xl"}>Create Collective</Button>
+                                <Button leftSection={<IconPlus stroke={1.5} />} type="submit" size="lg" variant="outline" radius={"xl"}>Create Collective</Button>
                             </Group>
                         </Grid.Col>
                     </Grid>

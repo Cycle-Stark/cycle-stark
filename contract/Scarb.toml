@@ -18,6 +18,7 @@ snforge_std = { git = "https://github.com/foundry-rs/starknet-foundry.git", tag 
 name = "GoerliFork"
 url = "https://starknet-goerli.infura.io/v3/958e1b411a40480eacb8c0f5d640a8ec"
 block_id.tag = "Latest"
+
 [tool.sncast.account1]
 account = "account1"
 accounts-file = "/home/dalmas/.starknet_accounts/starknet_open_zeppelin_accounts.json"
@@ -28,3 +29,8 @@ url = "http://localhost:5050/rpc"
 account = "account2"
 accounts-file = "/home/dalmas/.starknet_accounts/starknet_open_zeppelin_accounts.json"
 url = "http://localhost:5050/rpc"
+
+[tool.sncast.argent_account]
+account = "argent_account"
+accounts-file = "/home/dalmas/.starknet_accounts/starknet_open_zeppelin_accounts.json"
+url = "https://starknet-goerli.infura.io/v3/958e1b411a40480eacb8c0f5d640a8ec"

@@ -46,6 +46,8 @@ fn register_collective() {
     let collective_name = 'Collective 1';
     let amt = 2_000_000_000_000_000_000;
 
+    assert(helper_dispatcher.get_collectives(1).len() == 0, 'Getting collectives failes');
+
     main_dispatcher
         .register_collective(
             name: 'Collective 1',
@@ -55,7 +57,10 @@ fn register_collective() {
             cycle_amount: amt,
             fine: amt,
             token: token_address,
-            start_date: 1699887711056
+            start_date: 1699887711056,
+            aim: 'Buy land for each other',
+            decimals: 18,
+            symbol: 'ETH'
         );
 
     let collective = main_dispatcher.get_stark_collective(1);
@@ -80,7 +85,10 @@ fn join_collective() {
             cycle_amount: amt,
             fine: amt,
             token: token_address,
-            start_date: 1699887711056
+            start_date: 1699887711056,
+            aim: 'Buy land for each other',
+            decimals: 18,
+            symbol: 'ETH'
         );
 
     let collective = main_dispatcher.get_stark_collective(1);
@@ -112,7 +120,10 @@ fn close_registrations() {
             cycle_amount: amt,
             fine: amt,
             token: token_address,
-            start_date: 1699887711056
+            start_date: 1699887711056,
+            aim: 'Buy land for each other',
+            decimals: 18,
+            symbol: 'ETH'
         );
 
     let collective = main_dispatcher.get_stark_collective(1);
@@ -165,7 +176,10 @@ fn lock_new_stark() {
             cycle_amount: amt,
             fine: amt,
             token: token_address,
-            start_date: 1699887711056
+            start_date: 1699887711056,
+            aim: 'Buy land for each other',
+            decimals: 18,
+            symbol: 'ETH'
         );
 
     let collective = main_dispatcher.get_stark_collective(1);
@@ -216,7 +230,10 @@ fn start_cycle() {
             cycle_amount: amt,
             fine: amt,
             token: token_address,
-            start_date: 1699887711056
+            start_date: 1699887711056,
+            aim: 'Buy land for each other',
+            decimals: 18,
+            symbol: 'ETH'
         );
 
     main_dispatcher.join_collective(1);
@@ -258,7 +275,10 @@ fn contribute() {
             cycle_amount: amt,
             fine: amt,
             token: token_address,
-            start_date: 1699887711056
+            start_date: 1699887711056,
+            aim: 'Buy land for each other',
+            decimals: 18,
+            symbol: 'ETH'
         );
 
     start_prank(token_address, my_address);
@@ -310,7 +330,10 @@ fn remit() {
             cycle_amount: amt,
             fine: amt,
             token: token_address,
-            start_date: 1699887711056
+            start_date: 1699887711056,
+            aim: 'Buy land for each other',
+            decimals: 18,
+            symbol: 'ETH'
         );
 
     start_prank(token_address, my_address);

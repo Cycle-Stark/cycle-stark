@@ -1,40 +1,72 @@
-import { Grid, Stack, Title } from "@mantine/core"
+import { Button, Grid, Stack, Text, Title } from "@mantine/core"
 import Collective from "../../components/collectives/Collective"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { contract } from "../../configs/config"
-import { CairoResult, CairoResultVariant, cairo, shortString } from "starknet"
-import BN from "bignumber.js"
+import CollectiveSkeleton from "../../components/collectives/CollectiveSkeleton"
+import { Link } from "react-router-dom"
+import { IconPlus } from "@tabler/icons-react"
+import { Helmet } from "react-helmet"
 
 const Collectives = () => {
+    const [collectives, setCollectives] = useState<null | any>()
+    const [loading, setLoading] = useState(false)
 
-    async function callContract() {
-        const res = await contract.get_collectives(1)
-        console.log(res)
-        const result = new CairoResult(CairoResultVariant.Ok, "25604676053229993250954053807560286580137370434497907n")
-        // console.log(result)
-        let large_no = BN("25604676053229993250954053807560286580137370434497907n").toString()
-        console.log(large_no)
-        let r = shortString.decodeShortString("25604676053229993250954053807560286580137370434497907n")
-        console.log(r)
+    async function loadCollectives() {
+        setLoading(true)
+        try {
+            const res = await contract.get_collectives(1)
+            setCollectives(res)
+        }
+        catch (error: any) {
+            console.error("Error loading collectives::- ", error)
+        }
+        setLoading(false)
     }
 
     useEffect(() => {
-        callContract()
-    }, [callContract])
+        loadCollectives()
+    }, [])
 
     return (
+        <>
+        <Helmet>
+            <title>Collectives | CycleStark</title>
+        </Helmet>
         <Stack>
             <Title order={1} className="custom-title" style={{ textAlign: "center" }} size={42}>Browse Through Collectives</Title>
+            {
+                loading ? (
+                    <Grid>
+                        {
+                            Array(8).fill(1).map((_item: number, i: number) => (
+                                <Grid.Col key={`collective_${i}`} span={{ xl: 3, md: 4, sm: 6, xs: 12 }} mb="lg">
+                                    <CollectiveSkeleton />
+                                </Grid.Col>
+                            ))
+                        }
+                    </Grid>
+                ) : null
+            }
+            {
+                collectives?.length === 0 && !loading ? (
+                    <Stack align="center">
+                        <Title ta={'center'} fw={400} mt={40}>There are no collectives yet!</Title>
+                        <Text>Create the first one!</Text>
+                        <Button component={Link} to="/create/collective" size="lg" radius={'md'} leftSection={<IconPlus stroke={1.5} />} variant="outline">Collective</Button>
+                    </Stack>
+                ) : null
+            }
             <Grid>
                 {
-                    Array(20).fill(1).map((item: number, i: number) => (
-                        <Grid.Col key={`collective_${item}_${i}`} span={{ xl: 3, md: 4, sm: 6, xs: 12 }} py={40} pl={20}>
-                            <Collective id={item + i} />
+                    collectives?.map((collective: any, i: number) => (
+                        <Grid.Col key={`collective_${collective?.id?.toString()}_${i}`} span={{ xl: 3, md: 4, sm: 6, xs: 12 }} py={40} pl={20}>
+                            <Collective collective={collective} />
                         </Grid.Col>
                     ))
                 }
             </Grid>
         </Stack>
+        </>
     )
 }
 

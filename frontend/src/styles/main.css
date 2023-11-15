@@ -54,6 +54,10 @@ body {
   height: 100%;
 }
 
+.w-100 {
+  width: 100%;
+}
+
 .behind-screen {
   position: relative;
   /* transform:  perspective(1000px) translateZ(-100px) skewX(-10deg); */

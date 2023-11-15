@@ -1,5 +1,6 @@
-import { ActionIcon, Avatar, CopyButton, Group, Text } from "@mantine/core"
+import { ActionIcon, Avatar, CopyButton, Group, Text, Tooltip } from "@mantine/core"
 import { IconCopy } from "@tabler/icons-react"
+import { getTwoAddressLetters } from "../../configs/utils"
 
 
 interface IHero {
@@ -7,20 +8,24 @@ interface IHero {
 }
 
 const Hero = (props: IHero) => {
-    const {} = props
+    const { hero_address } = props
     return (
         <Group align="center">
             <Group align="center">
-                <Avatar />
+                <Avatar radius={'md'}>
+                    {getTwoAddressLetters(hero_address)}
+                </Avatar>
                 <Text size="sm">
-                    0x02FEFe559db7F64d20296e7ca4aca8d864b79bbE1cb8A31502d8986f8ad5Ba0B
+                    {hero_address}
                 </Text>
             </Group>
-            <CopyButton value="0x02FEFe559db7F64d20296e7ca4aca8d864b79bbE1cb8A31502d8986f8ad5Ba0B">
+            <CopyButton value={hero_address}>
                 {({ copied, copy }) => (
-                    <ActionIcon color={copied ? 'teal' : 'blue'} variant="subtle" onClick={copy}>
-                        <IconCopy size={16} />
-                    </ActionIcon>
+                    <Tooltip label={copied ? 'Copied' : 'Copy'} color={copied ? 'teal' : 'blue'} radius={'md'}>
+                        <ActionIcon color={copied ? 'teal' : 'blue'} variant="subtle" onClick={copy}>
+                            <IconCopy size={16} />
+                        </ActionIcon>
+                    </Tooltip>
                 )}
             </CopyButton>
         </Group>

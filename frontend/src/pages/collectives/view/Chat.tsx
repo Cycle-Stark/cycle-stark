@@ -1,8 +1,16 @@
-import React from 'react'
+import { Helmet } from 'react-helmet'
+import { useCollectiveContext } from '../../../providers/CollectiveProvider'
 
 const Chat = () => {
+  const {collective} = useCollectiveContext()
+  
   return (
-    <div>Chat</div>
+    <>
+      <Helmet>
+        <title>{`${collective?.name} | Heroes`}</title>
+      </Helmet>
+      <div>Chat</div>
+    </>
   )
 }
 

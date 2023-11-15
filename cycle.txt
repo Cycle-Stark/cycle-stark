@@ -14,3 +14,16 @@ I have been able to build a product(though not on Mainnet) on DeFi which is a p2
 As a fullstack developer, working on both sides has made have a considerable amount of knowledge and understanding on how systems operate. I am also working on my own startup called Live Software Developer Ltd that offers IT services. Furthermore with Live Software Developer Ltd, we have mentoring classes in which I take part in where we help onboard new developers by training them on the coding basics and guide them on how to learn more and to be able to choose the paths they would like to take in the future.
 
 Mentoring is one of the things I like doing as a fullstack developer reason being it helps me to learn things that I had not learnt or taken a keen eye on and also helping others get to know something new or know something better or from a different point.
+
+
+About Cycle Stark
+
+Cycle Stark is a decentralized system designed to facilitate collaborative fund pooling among participants, fostering financial cooperation and empowerment. Within this platform, individuals can form collectives, each of which establishes specific rules governing the distribution of funds during rounds. Participants collaboratively decide on factors such as the amount allocated per round, the duration between successive rounds (e.g., 7 days), and penalties for non-compliance.
+
+To ensure the integrity of the system, members are required to lock a predetermined sum, calculated as the product of the round amount and the number of collective members. This locking mechanism serves as a security measure, safeguarding members from potential fraudulent activities. In the event that a member fails to contribute in a given round, the locked amount is gradually deducted, preventing any participant from incurring losses due to non-compliance.
+
+Cycle Stark incorporates a blacklisting feature to deter premature exits from the system. Members who exit before the designated cycle concludes may face consequences to uphold the integrity and fairness of the collaborative effort.
+
+At the conclusion of each cycle, participants have the option to withdraw their locked assets or leave them for the subsequent collective they may choose to join. Payouts are directed to individual participant accounts within the system, providing flexibility for members to decide when and how to access their funds.
+
+The motivation behind developing Cycle Stark is to create an inclusive financial environment that transcends geographical and socioeconomic barriers. This platform aims to empower individuals by enabling them to collectively accumulate larger sums over time, addressing the challenge of having insufficient funds for significant purchases. Leveraging Starknet's advantages, such as reduced fees, enhanced security, and efficient transactions, Cycle Stark strives to offer a seamless and reliable financial collaboration experience for its users.

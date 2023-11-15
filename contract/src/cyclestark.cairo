@@ -14,7 +14,8 @@ mod CycleStark {
     use super::{ContractAddress, CollectiveID, CycleID, HeroID, TokenAddress};
 
     use cycle_stark::interfaces::{
-        StarkCollective, StarkHero, CollectiveCycle, CycleContribution, ICycleStark, IHelperFunctions
+        StarkCollective, StarkHero, CollectiveCycle, CycleContribution, ICycleStark,
+        IHelperFunctions
     };
 
 
@@ -134,18 +135,105 @@ mod CycleStark {
             self.collective_heroes.read((collective_id, index))
         }
 
-        fn get_collectives(self: @ContractState, page: u32) -> Array<StarkCollective>{
+        fn get_collectives(self: @ContractState, page: u32) -> Array<StarkCollective> {
             let mut collectives = ArrayTrait::<StarkCollective>::new();
             let total_count = self.collectives_count.read();
             let mut count: u256 = 1;
-            loop {
-                collectives.append(self.stark_collectives.read(count));
-                count += 1;
-                if count > total_count {
-                    break;
-                }
-            };
+            if total_count > 0 {
+                loop {
+                    collectives.append(self.stark_collectives.read(count));
+                    count += 1;
+                    if count > total_count {
+                        break;
+                    }
+                };
+            }
             collectives
+        }
+
+        fn get_hero_collectives(
+            self: @ContractState, hero: HeroID, page: u32
+        ) -> Array<StarkCollective> {
+            let hero_ = self.stark_heroes.read(hero);
+            let hero_collectives_count = hero_.collectives_count;
+            // let mut hero_collectives_ids = ArrayTrait::<CollectiveID>::new();
+            let mut collectives = ArrayTrait::<StarkCollective>::new();
+            // let total_count = self.collectives_count.read();
+            let mut count = 1;
+
+            if hero_collectives_count > 0 {
+                loop {
+                    let collective_id = self.hero_collectives.read((hero, count));
+                    collectives.append(self.stark_collectives.read(collective_id));
+                    count += 1;
+                    if count > hero_collectives_count {
+                        break;
+                    }
+                };
+            }
+            collectives
+        }
+
+        fn get_collective_heroes(
+            self: @ContractState, collective_id: CollectiveID
+        ) -> Array<ContractAddress> {
+            let collective = self.stark_collectives.read(collective_id);
+            let heroes_count = collective.hero_count;
+            let mut hero_addresses = ArrayTrait::<HeroID>::new();
+            let mut count = 1;
+            if heroes_count > 0 {
+                loop {
+                    let h_id = self.collective_heroes.read((collective_id, count));
+                    hero_addresses.append(h_id);
+                    count += 1;
+                    if count > heroes_count {
+                        break;
+                    }
+                }
+            }
+            hero_addresses
+        }
+
+        fn get_collective_cycles(
+            self: @ContractState, collective_id: CollectiveID
+        ) -> Array<CollectiveCycle> {
+            let mut cycles = ArrayTrait::<CollectiveCycle>::new();
+            let s_c = self.stark_collectives.read(collective_id);
+            let cycles_count = s_c.cycles_count;
+            let mut count = 1;
+            if cycles_count > 0 {
+                loop {
+                    let cycle = self.collective_cycles.read((collective_id, count));
+                    cycles.append(cycle);
+                    count += 1;
+                    if count > cycles_count {
+                        break;
+                    }
+                }
+            }
+            cycles
+        }
+        fn get_cycle_contributions(
+            self: @ContractState, collective_id: CollectiveID, cycle_id: CycleID
+        ) -> Array<CycleContribution> {
+            let mut contributions = ArrayTrait::<CycleContribution>::new();
+            let s_c = self.stark_collectives.read(collective_id);
+            let cycle = self.collective_cycles.read((collective_id, cycle_id));
+
+            let contributions_count = cycle.contributions_count;
+            let mut count = 1;
+
+            if contributions_count > 0 {
+                loop {
+                    let contribution = self.cycle_contributions.read((collective_id, cycle_id, count));
+                    contributions.append(contribution);
+                    count += 1;
+                    if count > contributions_count {
+                        break;
+                    }
+                }
+            }
+            contributions
         }
     }
 
@@ -174,9 +262,12 @@ mod CycleStark {
             fine: u256,
             token: TokenAddress, // add timestamp argument
             start_date: u64,
+            aim: felt252,
+            decimals: u32,
+            symbol: felt252,
         ) {
             let hero_address: ContractAddress = get_caller_address();
-            let mut hero: StarkHero = self.stark_heroes.read(hero_address);
+            let mut hero = self.stark_heroes.read(hero_address);
             let collectives_count = self.collectives_count.read() + 1;
             self.collectives_count.write(collectives_count);
             // Adjust the collectives count for the hero before using the figure.
@@ -201,6 +292,9 @@ mod CycleStark {
                 has_ended: false,
                 current_hero: hero_address,
                 next_hero: hero_address,
+                aim,
+                decimals,
+                symbol
             };
 
             self.stark_collectives.write(collectives_count, collective);
@@ -321,6 +415,7 @@ mod CycleStark {
 
         fn get_receiver_address(ref self: ContractState, collective_id: CollectiveID) -> HeroID {
             let mut s_c: StarkCollective = self.stark_collectives.read(collective_id);
+            let player = Option::<u32>::None;
             let active_hero_address = self
                 .collective_heroes
                 .read((collective_id, s_c.active_cycle));

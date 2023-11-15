@@ -1,0 +1,107 @@
+import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { CONTRACT_ABI, CONTRACT_ADDRESS } from '../configs/config'
+import { Contract } from 'starknet'
+import { connect, disconnect } from 'starknetkit'
+
+const initialData = {
+    contract: null as any,
+    account: null as any,
+    address: null as any,
+    connection: null as any,
+    handleConnetWalletBtnClick: null as any
+}
+
+export const AppContext = createContext(initialData)
+
+export const useAppContext = () => {
+    return useContext(AppContext)
+}
+
+interface IAppProvider {
+    children: ReactNode
+}
+
+const AppProvider = ({ children }: IAppProvider) => {
+
+    const [contract, setContract] = useState<null | any>()
+    const [connection, setConnection] = useState<null | any>();
+    const [account, setAccount] = useState<null | any>();
+    const [address, setAddress] = useState<null | any>("");
+
+    const connectWallet = async () => {
+        const connection = await connect({
+            webWalletUrl: "https://web.argent.xyz",
+        });
+
+        if (connection && connection.isConnected) {
+            setConnection(connection);
+            setAccount(connection.account);
+            setAddress(connection.selectedAddress);
+        }
+    };
+
+    const disconnectWallet = async () => {
+        await disconnect({ clearLastWallet: true });
+        setConnection(null);
+        setAccount(null);
+        setAddress("");
+    };
+
+
+
+    const makeContractConnection = () => {
+        const contract = new Contract(CONTRACT_ABI, CONTRACT_ADDRESS, account)
+        setContract(contract)
+    }
+
+    const handleConnetWalletBtnClick = () => {
+        if (account) {
+            connectWallet()
+        }
+        else {
+            disconnectWallet()
+        }
+    }
+
+
+
+    const contextValue = useMemo(() => ({
+        contract,
+        account,
+        address,
+        connection,
+        handleConnetWalletBtnClick
+    }), [account]);
+
+    // useEffect(() => {
+    //     checkIfConnected()
+    // }, [])
+
+    useEffect(() => {
+        makeContractConnection()
+    }, [account])
+
+    useEffect(() => {
+        const connectToStarknet = async () => {
+            const connection = await connect({
+                modalMode: "neverAsk",
+                webWalletUrl: "https://web.argent.xyz",
+            });
+
+            if (connection && connection.isConnected) {
+                setConnection(connection);
+                setAccount(connection.account);
+                setAddress(connection.selectedAddress);
+            }
+        };
+        connectToStarknet();
+    }, []);
+
+    return (
+        <AppContext.Provider value={contextValue}>
+            {children}
+        </AppContext.Provider>
+    )
+}
+
+export default AppProvider

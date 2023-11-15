@@ -2,7 +2,7 @@ use cycle_stark::utils::{CollectiveID, CycleID, HeroID, TokenAddress};
 use starknet::ContractAddress;
 use array::ArrayTrait;
 
-#[derive(Drop, Copy, starknet::Store)]
+#[derive(Drop, Serde, Copy, starknet::Store)]
 struct ReceivedStark {
     date: felt252,
     amount: felt252,
@@ -17,7 +17,7 @@ struct StarkHero {
     collectives_count: u32,
 }
 
-#[derive(Copy, Drop, starknet::Store)]
+#[derive(Copy, Drop, Serde, starknet::Store)]
 struct CycleContribution {
     hero_id: HeroID,
     amount: u256
@@ -42,6 +42,9 @@ struct StarkCollective {
     has_ended: bool,
     current_hero: HeroID,
     next_hero: HeroID,
+    aim: felt252,
+    decimals: u32,
+    symbol: felt252,
 }
 
 #[derive(Copy, Drop, Serde, starknet::Store)]
@@ -65,6 +68,9 @@ trait ICycleStark<TContractState> {
         fine: u256,
         token: TokenAddress,
         start_date: u64,
+        aim: felt252,
+        decimals: u32,
+        symbol: felt252,
     );
     fn get_stark_collective(self: @TContractState, collective_id: CollectiveID) -> StarkCollective;
     fn get_collective_cycle(
@@ -95,5 +101,8 @@ trait IHelperFunctions<TContractState> {
         self: @TContractState, collective_id: CollectiveID, index: u32
     ) -> HeroID;
     fn get_collectives(self: @TContractState, page: u32) -> Array<StarkCollective>;
-// Create a function that returns an array of collectives to the frontend (Also the same for collective and cycle information) // TODO
+    fn get_hero_collectives(self: @TContractState, hero: HeroID, page: u32) -> Array<StarkCollective>;
+    fn get_collective_heroes(self: @TContractState, collective_id: CollectiveID) -> Array<ContractAddress>;
+    fn get_collective_cycles(self: @TContractState, collective_id: CollectiveID) -> Array<CollectiveCycle>;
+    fn get_cycle_contributions(self: @TContractState, collective_id: CollectiveID, cycle_id: CycleID) -> Array<CycleContribution>;
 }
