@@ -1,11 +1,11 @@
 import { ActionIcon, Button, Center, Container, Grid, Group, LoadingOverlay, MantineTheme, NumberInput, Stack, Text, TextInput, Title, useMantineTheme } from "@mantine/core"
 import { DateTimePicker } from '@mantine/dates';
 import { IconAlertTriangle, IconInfoCircle, IconPlus, IconTrash } from "@tabler/icons-react";
-import { account, contract } from "../../configs/config";
 import { shortString } from "starknet";
 import { useForm } from "@mantine/form"
 import { useState } from "react";
 import { showNotification } from "@mantine/notifications";
+import { useAppContext } from "../../providers/AppProvider";
 
 
 interface IColorText {
@@ -41,6 +41,7 @@ const CreateCollective = () => {
 
     const [loading, setLoading] = useState(false)
     const theme = useMantineTheme()
+    const { contract } = useAppContext()
 
     const form = useForm({
         initialValues: {
@@ -114,33 +115,36 @@ const CreateCollective = () => {
 
     async function registerCollective(data: any) {
         setLoading(true)
-        contract.connect(account)
+        // contract.connect(account)
 
         const rule_1 = data.rules[0].rule
         const rule_2 = data?.rules.length > 1 ? data.rules[1].rule : ""
         const rule_3 = data?.rules.length > 2 ? data.rules[2].rule : ""
 
-        // const token: string = '0x048242eca329a05af1909fa79cb1f9a4275ff89b987d405ec7de08f73b85588f'
+        // const token: string = '0x049D36570D4e46f48e99674bd3fcc84644DdD6b96F7C741B1562B82f9e004dC7'
         const collective_inputs = [encoder(data.name), encoder(rule_1), encoder(rule_2), encoder(rule_3), data.amt, data.fine, data?.token, data.start_date.getTime(), encoder(data.aim), data.decimals, encoder(data.symbol)]
-        const myCall = contract.populate('register_collective', collective_inputs)
-        contract.register_collective(myCall.calldata).then((_res: any) => {
-            showNotification({
-                title: "Success",
-                message: "You have successfully created a new collective",
-                color: "green",
-                icon: <IconInfoCircle stroke={1.5} />
+        if (contract) {
+            const myCall = contract.populate('register_collective', collective_inputs)
+            contract.register_collective(myCall.calldata).then((_res: any) => {
+                showNotification({
+                    title: "Success",
+                    message: "You have successfully created a new collective",
+                    color: "green",
+                    icon: <IconInfoCircle stroke={1.5} />
+                })
+                form.reset()
+
+            }).catch((_error: any) => {
+                showNotification({
+                    title: "Failed!!",
+                    message: "Creating a new collective has failed",
+                    color: "red",
+                    icon: <IconAlertTriangle stroke={1.5} />
+                })
+            }).finally(() => {
+                setLoading(false)
             })
-            form.reset()
-        }).catch((_error: any) => {
-            showNotification({
-                title: "Failed!!",
-                message: "Creating a new collective has failed",
-                color: "red",
-                icon: <IconAlertTriangle stroke={1.5} />
-            })
-        }).finally(() => {
-            setLoading(false)
-        })
+        }
     }
 
     // async function sendSomeFunds() {
@@ -171,6 +175,7 @@ const CreateCollective = () => {
     }
 
     // 2 ETH -> 2000000000000000000
+    // 0.000002 ETH-> 20000000000000
 
     return (
         <Stack>

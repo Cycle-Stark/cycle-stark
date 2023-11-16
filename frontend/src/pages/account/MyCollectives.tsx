@@ -1,22 +1,25 @@
 import { Button, Grid, Stack, Title } from "@mantine/core"
 import CollectiveSkeleton from "../../components/collectives/CollectiveSkeleton"
 import { useState, useEffect } from "react"
-import { ACCOUNT_ADDRESS, contract } from "../../configs/config"
 import { Link } from "react-router-dom"
 import { IconPlus } from "@tabler/icons-react"
 import Collective from "../../components/collectives/Collective"
+import { useAppContext } from "../../providers/AppProvider"
 
 
 const MyCollectives = () => {
 
     const [collectives, setCollectives] = useState<null | any>()
     const [loading, setLoading] = useState(false)
+    const { contract, address } = useAppContext()
 
     async function loadCollectives() {
         setLoading(true)
         try {
-            const res = await contract.get_hero_collectives(ACCOUNT_ADDRESS, 1)
-            setCollectives(res)
+            if (contract) {
+                const res = await contract.get_hero_collectives(address, 1)
+                setCollectives(res)
+            }
         }
         catch (error: any) {
             console.error("Error loading your collectives::- ", error)

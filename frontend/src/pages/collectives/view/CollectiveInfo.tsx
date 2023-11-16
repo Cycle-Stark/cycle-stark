@@ -1,12 +1,12 @@
 import { Alert, Button, Grid, Group, Skeleton, Stack, Text, Title } from "@mantine/core"
 import { useParams } from "react-router-dom"
-import { ACCOUNT_ADDRESS } from "../../../configs/config"
 import { timeStampToDate } from "../../../configs/utils"
 import { IconAlertTriangle, IconCheck, IconX } from "@tabler/icons-react"
 import BigNumber from "bignumber.js"
 import CloseRegistrationsBtn from "../../../components/collectives/CloseRegistrationsBtn"
 import { useCollectiveContext } from "../../../providers/CollectiveProvider"
 import { Helmet } from "react-helmet"
+import { useAppContext } from "../../../providers/AppProvider"
 
 interface IDataRow {
   title: string
@@ -40,6 +40,8 @@ const CollectiveInfo = () => {
   const { cid } = useParams()
 
   const {collective, isCollectiveFound, isCollectiveLoading} = useCollectiveContext()
+  const {address} = useAppContext()
+
   const loading = isCollectiveLoading
   
   const reloadPage = () => {
@@ -69,7 +71,7 @@ const CollectiveInfo = () => {
               {collective?.has_started ? "Yes" : "No"}
             </Button>
             {
-              collective?.owner === ACCOUNT_ADDRESS && !collective?.has_started ? <CloseRegistrationsBtn collective_id={cid} callBackFn={reloadPage} /> : null
+              collective?.owner === address && !collective?.has_started ? <CloseRegistrationsBtn collective_id={cid} callBackFn={reloadPage} /> : null
             }
           </Group>}
           loading={loading || !isCollectiveFound} />

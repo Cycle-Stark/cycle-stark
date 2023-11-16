@@ -23,7 +23,7 @@ export function bigintToShortStr(bigintstr: string) {
 
 export function convertToReadableTokens(tokens: any, decimals: number) {
     if (!tokens || !decimals) return ""
-    return new BigNumber(tokens).dividedBy(10 ** decimals).toNumber().toFixed(4)
+    return new BigNumber(tokens).dividedBy(10 ** decimals).toNumber().toFixed(6)
 }
 
 export function bigintToLongStrAddress(bigintstr: string) {
@@ -46,5 +46,6 @@ export function timeStampToDate(timestamp: number) {
 
 
 export function getTwoAddressLetters(address: string){
-    return  address.substring(0, 4).substring(2, 4)
+    if (!address) return "0x"
+    return  address?.substring(0, 4).substring(2, 4) ?? "0x"
 }

@@ -1,8 +1,16 @@
 import { Paper, Stack, Text, useMantineColorScheme } from '@mantine/core'
 import Hero from './Hero'
-import { isDarkMode } from '../../configs/utils'
+import { bigintToLongStrAddress, convertToReadableTokens, isDarkMode } from '../../configs/utils'
 
-const Contribution = () => {
+interface IContribution{
+    hero_id: any
+    amount: any,
+    decimals: any,
+    symbol: any
+}
+
+const Contribution = (props: IContribution) => {
+    const {hero_id, amount, decimals, symbol} = props
     const {colorScheme} = useMantineColorScheme()
 
     return (
@@ -10,9 +18,9 @@ const Contribution = () => {
             background: isDarkMode(colorScheme) ? theme.colors.dark[5] : theme.colors.gray[1]
         })}>
             <Stack>
-                <Hero hero_address='dalmas' />
+                <Hero hero_address={bigintToLongStrAddress(hero_id)} />
                 <Text size='sm'>
-                    <strong>Amount</strong>: 200 ETH
+                    <strong>Amount</strong>: {convertToReadableTokens(amount, decimals)} {symbol}
                 </Text>
             </Stack>
         </Paper>

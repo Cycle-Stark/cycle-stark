@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Group, useMantineColorScheme, useMantineTheme } from '@mantine/core'
+import { ActionIcon, Box, Group, Image, useMantineColorScheme, useMantineTheme } from '@mantine/core'
 import CustomNavLink, { ICustomNavLinkProps } from './CustomNavLink'
 import { isDarkMode } from '../../configs/utils';
 import { IconSun, IconMoon, IconHome2, IconPlus, IconUsersGroup, IconUserHeart } from '@tabler/icons-react';
@@ -39,6 +39,8 @@ const TopBarNavigation = () => {
         }}>
             <Group align='center' justify='space-between'>
                 <Group>
+                    {/* <Image src={'/images/logo.png'} w={'200px'} /> */}
+                    <Image src={'/images/icon1.png'} h={'60px'} />
                     {
                         navlinks?.map((link: ICustomNavLinkProps, i: number) => (
                             <CustomNavLink key={`navlink_${i}`} {...link} />

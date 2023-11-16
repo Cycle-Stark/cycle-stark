@@ -1,8 +1,6 @@
 import { Stack, Text, Title } from "@mantine/core"
 import Hero from "../../../components/collectives/Hero"
 import { bigintToLongStrAddress } from "../../../configs/utils"
-import { useEffect, useState } from "react"
-import { ACCOUNT_ADDRESS, contract } from "../../../configs/config"
 import { useParams } from "react-router-dom"
 import JoinCollectiveBtn from "../../../components/collectives/JoinCollectiveBtn"
 import HeroSkeleton from "../../../components/collectives/HeroSkeleton"
@@ -11,32 +9,13 @@ import { Helmet } from "react-helmet";
 
 const Heroes = () => {
 
-  const [heroes, setHeroes] = useState<null | any>([])
-  const [loading, setLoading] = useState(false)
   const { cid } = useParams()
 
-  const { collective } = useCollectiveContext()
+  const { collective, heroes, isMember, loadingHeroes } = useCollectiveContext()
 
-  async function loadHeroes() {
-    setLoading(true)
-    try {
-      const res = await contract.get_collective_heroes(cid)
-      setHeroes(res)
-    }
-    catch (error: any) {
-      console.error("Error loading heroes::- ", error)
-    }
-    setLoading(false)
+  const reloadPage = () => {
+    window.location.reload()
   }
-
-  function canJoin() {
-    return heroes?.some((address: any) => bigintToLongStrAddress(address?.toString()) === ACCOUNT_ADDRESS);
-  }
-
-  useEffect(() => {
-    loadHeroes()
-  }, [])
-
   return (
     <>
 
@@ -48,10 +27,10 @@ const Heroes = () => {
 
         <Title order={1} size={52} className="custom-title clip-text" style={{ textAlign: "center" }}> Heroes </Title>
         {
-          !canJoin() && !loading ? <JoinCollectiveBtn collective_id={cid} callBackFn={loadHeroes} /> : null
+          !isMember && !loadingHeroes && !collective?.has_started ? <JoinCollectiveBtn collective_id={cid} callBackFn={reloadPage} /> : null
         }
         {
-          loading ? (
+          loadingHeroes ? (
             <>
               {
                 Array(8).fill(1).map((_item: number, i: number) => (
@@ -62,12 +41,12 @@ const Heroes = () => {
           ) : null
         }
         {
-          heroes?.length === 0 && !loading ? (
+          heroes?.length === 0 && !loadingHeroes ? (
             <Stack align="center">
               <Title ta={'center'} fw={400} mt={40}>No heroes here!</Title>
               <Text size="sm" ta={'center'}>Want to join?</Text>
               <Text ta="center"></Text>
-              <JoinCollectiveBtn collective_id={cid} callBackFn={loadHeroes} />
+              <JoinCollectiveBtn collective_id={cid} callBackFn={reloadPage} />
             </Stack>
           ) : null
         }

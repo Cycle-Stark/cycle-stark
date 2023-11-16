@@ -1,29 +1,29 @@
 import { useState } from 'react'
 import { Button, Loader } from '@mantine/core'
-import { IconAlertTriangle, IconInfoCircle, IconRepeat } from '@tabler/icons-react'
+import { IconAlertTriangle, IconArrowRight, IconInfoCircle } from '@tabler/icons-react'
 import { showNotification } from '@mantine/notifications'
 import { useAppContext } from '../../providers/AppProvider'
 
 
-interface IStartCycleBtnBtn {
+interface IRemitCycleBtn {
     collective_id: any
     callBackFn: any
 }
 
-const StartCycleBtn = (props: IStartCycleBtnBtn) => {
+const RemitCycleBtn = (props: IRemitCycleBtn) => {
     const { collective_id, callBackFn } = props
     const [loading, setLoading] = useState(false)
     const { contract } = useAppContext()
 
-    async function start() {
+    async function remit() {
         if (contract) {
             setLoading(true)
             const collective_inputs: any = [collective_id]
-            const myCall = contract.populate('start_cycle', collective_inputs)
-            contract.start_cycle(myCall.calldata).then((_res: any) => {
+            const myCall = contract.populate('remit', collective_inputs)
+            contract.remit(myCall.calldata).then((_res: any) => {
                 showNotification({
                     title: "Success",
-                    message: "Collective cycle started successfully",
+                    message: "You have successfully remited",
                     color: "green",
                     icon: <IconInfoCircle stroke={1.5} />
                 })
@@ -31,7 +31,7 @@ const StartCycleBtn = (props: IStartCycleBtnBtn) => {
             }).catch((_error: any) => {
                 showNotification({
                     title: "Failed!!",
-                    message: "Collective cycle failed to start, try again later!",
+                    message: "Failed to remit. Try again later!",
                     color: "red",
                     icon: <IconAlertTriangle stroke={1.5} />
                 })
@@ -42,8 +42,8 @@ const StartCycleBtn = (props: IStartCycleBtnBtn) => {
     }
 
     return (
-        <Button onClick={start} size="md" radius={'md'} rightSection={loading ? <Loader size={'sm'} c={'white'} /> : <IconRepeat stroke={1.5} />} variant="filled">{loading ? "Starting Cycle" : "Start Cycle"}</Button>
+        <Button onClick={remit} size="md" radius={'md'} rightSection={loading ? <Loader size={'sm'} c={'white'} /> : <IconArrowRight stroke={1.5} />} variant="filled">{loading ? "Remiting" : "Remit"}</Button>
     )
 }
 
-export default StartCycleBtn
+export default RemitCycleBtn

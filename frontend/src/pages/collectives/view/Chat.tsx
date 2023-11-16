@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet'
 import { useCollectiveContext } from '../../../providers/CollectiveProvider'
+import ChatBox from '../../../components/chat/ChatBox'
 
 const Chat = () => {
   const {collective} = useCollectiveContext()
@@ -9,7 +10,9 @@ const Chat = () => {
       <Helmet>
         <title>{`${collective?.name} | Heroes`}</title>
       </Helmet>
-      <div>Chat</div>
+      <div>
+        <ChatBox collectiveID={collective?.id} isForCollective={true} />
+      </div>
     </>
   )
 }

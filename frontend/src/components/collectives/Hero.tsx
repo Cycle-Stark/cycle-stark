@@ -10,8 +10,12 @@ interface IHero {
 const Hero = (props: IHero) => {
     const { hero_address } = props
     return (
-        <Group align="center">
-            <Group align="center">
+        <Group align="center" style={{
+            flexWrap: "nowrap"
+        }}>
+            <Group align="center" style={{
+            flexWrap: "nowrap"
+        }}>
                 <Avatar radius={'md'}>
                     {getTwoAddressLetters(hero_address)}
                 </Avatar>

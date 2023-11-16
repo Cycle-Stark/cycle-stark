@@ -2,6 +2,8 @@ import { ReactNode, createContext, useContext, useEffect, useMemo, useState } fr
 import { CONTRACT_ABI, CONTRACT_ADDRESS } from '../configs/config'
 import { Contract } from 'starknet'
 import { connect, disconnect } from 'starknetkit'
+import { modals } from '@mantine/modals'
+import { Text } from '@mantine/core'
 
 const initialData = {
     contract: null as any,
@@ -31,6 +33,7 @@ const AppProvider = ({ children }: IAppProvider) => {
     const connectWallet = async () => {
         const connection = await connect({
             webWalletUrl: "https://web.argent.xyz",
+            dappName: "Cycle Stark",
         });
 
         if (connection && connection.isConnected) {
@@ -48,21 +51,41 @@ const AppProvider = ({ children }: IAppProvider) => {
     };
 
 
+    const openConfirmDisconnectModal = () => modals.openConfirmModal({
+        title: 'Please confirm your action',
+        centered: true,
+        radius: "md",
+        children: (
+            <Text size="sm">
+                Are you sure you want to disconnect your account?
+            </Text>
+        ),
+        labels: { confirm: 'Disconnect', cancel: 'Cancel' },
+        confirmProps: { radius: "md", variant: "light" },
+        cancelProps: { radius: "md", variant: "light" },
+        onCancel: () => { },
+        onConfirm: () => disconnectWallet(),
+    });
+
 
     const makeContractConnection = () => {
-        const contract = new Contract(CONTRACT_ABI, CONTRACT_ADDRESS, account)
-        setContract(contract)
+        if (account) {
+            const contract = new Contract(CONTRACT_ABI, CONTRACT_ADDRESS, account)
+            setContract(contract)
+        }
     }
 
     const handleConnetWalletBtnClick = () => {
-        if (account) {
+        console.log("clicked connect wallet")
+        if (!account) {
             connectWallet()
         }
         else {
-            disconnectWallet()
+
+            openConfirmDisconnectModal()
+
         }
     }
-
 
 
     const contextValue = useMemo(() => ({
@@ -71,21 +94,14 @@ const AppProvider = ({ children }: IAppProvider) => {
         address,
         connection,
         handleConnetWalletBtnClick
-    }), [account]);
-
-    // useEffect(() => {
-    //     checkIfConnected()
-    // }, [])
-
-    useEffect(() => {
-        makeContractConnection()
-    }, [account])
+    }), [account, contract, address]);
 
     useEffect(() => {
         const connectToStarknet = async () => {
             const connection = await connect({
                 modalMode: "neverAsk",
                 webWalletUrl: "https://web.argent.xyz",
+                dappName: "Cycle Stark",
             });
 
             if (connection && connection.isConnected) {
@@ -96,6 +112,10 @@ const AppProvider = ({ children }: IAppProvider) => {
         };
         connectToStarknet();
     }, []);
+
+    useEffect(() => {
+        makeContractConnection()
+    }, [account, address])
 
     return (
         <AppContext.Provider value={contextValue}>
