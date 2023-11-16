@@ -1,11 +1,11 @@
 import { ActionIcon, Button, Center, Container, Grid, Group, LoadingOverlay, MantineTheme, NumberInput, Stack, Text, TextInput, Title, useMantineTheme } from "@mantine/core"
 import { DateTimePicker } from '@mantine/dates';
 import { IconAlertTriangle, IconInfoCircle, IconPlus, IconTrash } from "@tabler/icons-react";
-import { shortString } from "starknet";
 import { useForm } from "@mantine/form"
 import { useState } from "react";
 import { showNotification } from "@mantine/notifications";
 import { useAppContext } from "../../providers/AppProvider";
+import { encoder } from "../../configs/utils";
 
 
 interface IColorText {
@@ -107,10 +107,6 @@ const CreateCollective = () => {
 
     const removeRule = (i: number) => {
         form.removeListItem("rules", i)
-    }
-
-    const encoder = (str: string) => {
-        return shortString.encodeShortString(str);
     }
 
     async function registerCollective(data: any) {

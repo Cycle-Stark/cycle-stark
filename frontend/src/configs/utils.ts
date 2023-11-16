@@ -49,3 +49,7 @@ export function getTwoAddressLetters(address: string){
     if (!address) return "0x"
     return  address?.substring(0, 4).substring(2, 4) ?? "0x"
 }
+
+export const encoder = (str: string) => {
+    return shortString.encodeShortString(str);
+}
