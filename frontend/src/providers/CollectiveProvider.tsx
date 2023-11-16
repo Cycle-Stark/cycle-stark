@@ -67,7 +67,7 @@ const CollectiveProvider = (props: ICollectiveProvider) => {
                     res.rule_2 = bigintToShortStr(res.rule_2)
                     res.rule_3 = bigintToShortStr(res.rule_3)
                     setCollective(res)
-                    if( res.owner === address ){
+                    if (res.owner === address) {
                         setIsOwner(true)
                     }
                 }
@@ -82,22 +82,23 @@ const CollectiveProvider = (props: ICollectiveProvider) => {
     async function loadHeroes() {
         setLoadingHeroes(true)
         try {
-          if (contract) {
-            const res = await contract.get_collective_heroes(cid)
-            setHeroes(res)
-            checkIfMember(res)
-          }
+            if (contract) {
+                const res = await contract.get_collective_heroes(cid)
+                setHeroes(res)
+                checkIfMember(res)
+            }
         }
         catch (error: any) {
-          console.error("Error loading collective heroes::- ", error)
+            console.error("Error loading collective heroes::- ", error)
+            setLoadingHeroes(false)
         }
         setLoadingHeroes(false)
-      }
-    
-      function checkIfMember(heroes_: any) {
+    }
+
+    function checkIfMember(heroes_: any) {
         let member_state = heroes_?.some((address_: any) => bigintToLongStrAddress(address_?.toString()) === address);
         setIsMember(member_state)
-      }
+    }
 
     const contextValue = useMemo(() => ({
         raw_collective: rawCollective,

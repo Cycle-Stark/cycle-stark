@@ -26,6 +26,7 @@
     "react-dom": "^18.2.0",
     "react-helmet": "^6.1.0",
     "react-router-dom": "^6.17.0",
+    "starknet": "^5.19.5",
     "starknetkit": "^1.0.12"
   },
   "devDependencies": {

@@ -48,7 +48,7 @@ const Cycle = (props: ICycle) => {
     }
 
     const can_contribute = () => {
-        let can_make_contribution = false
+        let can_make_contribution = true
         if (contributions.length > 0) {
             const contrib_found = contributions?.map((contrib: any) => bigintToLongStrAddress(contrib?.hero_id) === address)
             if (contrib_found) {
@@ -75,7 +75,7 @@ const Cycle = (props: ICycle) => {
                 <Box>
                     {has_ended ? <Button radius={'md'} disabled>Cycle has ended</Button> :
                         <>
-                        {(total_contributions >= collective.hero_count && isOwner) ? <RemitCycleBtn collective_id={cid} callBackFn={() => window.location.reload()} /> : `${percent_to_remit} % to remitance`}
+                        {(total_contributions >= collective?.hero_count && isOwner) ? <RemitCycleBtn collective_id={cid} callBackFn={() => window.location.reload()} /> : `${percent_to_remit} % to remitance`}
                         </>
                     }
                 </Box>
@@ -89,7 +89,7 @@ const Cycle = (props: ICycle) => {
                             <Stack>
                                 <Group justify="right">
                                     <Button leftSection={<IconLoader stroke={1.5} />} variant="light" radius={'md'} onClick={loadContributions}>Load contributions</Button>
-                                    {isMember && can_contribute() ? <ContributeBtn cid={cid} cycle_id={cycle_id} callBackFn={loadContributions} /> : null}
+                                    {isMember  && can_contribute() ? <ContributeBtn cid={cid} cycle_id={cycle_id} callBackFn={loadContributions} /> : null}
                                 </Group>
                                 {
                                     loading ? (
