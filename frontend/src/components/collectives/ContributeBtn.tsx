@@ -1,10 +1,10 @@
 import { Button, Loader } from "@mantine/core"
 import { showNotification } from "@mantine/notifications"
-import { IconInfoCircle, IconAlertTriangle, IconCoin } from "@tabler/icons-react"
+import { IconInfoCircle, IconCoin } from "@tabler/icons-react"
 import { useState } from "react"
 import { useCollectiveContext } from "../../providers/CollectiveProvider"
 import { useAppContext } from "../../providers/AppProvider"
-import { CallData, Contract } from "starknet"
+import { Contract } from "starknet"
 import { CONTRACT_ADDRESS, ERC20_ABI } from "../../configs/config"
 import BigNumber from "bignumber.js"
 
@@ -16,7 +16,7 @@ interface IContributeBtn {
 }
 
 const ContributeBtn = (props: IContributeBtn) => {
-    const { cid, cycle_id, callBackFn } = props
+    const { cid, callBackFn } = props
     const [loading, setLoading] = useState(false)
     const { raw_collective, collective } = useCollectiveContext()
     const { contract, account } = useAppContext()

@@ -1,10 +1,9 @@
-import { Contract, Account, Provider } from 'starknet'
 import { connect, disconnect } from 'starknetkit'
 
 import { abi } from '../assets/abi.json'
 import { erc20abi } from '../assets/erc20abi.json'
 
-const PRIVATE_KEY = "0x819033027885bc1840b6d564b6e8f68c"
+// const PRIVATE_KEY = "0x819033027885bc1840b6d564b6e8f68c"
 const ACCOUNT_ADDRESS = "0x77a6390ab3dc3045df373b93bf8b93899c3ad5111da9b66c54b62ddc98e7d4"
 
 const CONTRACT_ADDRESS = "0x10a09eb11dd5cc68012039a1923209413a96eafdefd635ac406231627464328"
