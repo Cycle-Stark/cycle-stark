@@ -7,7 +7,6 @@ export default defineConfig({
   build: {
     rollupOptions: {
       external: [
-        // 'starknet',
         /^node:.*/,
       ]
     },
