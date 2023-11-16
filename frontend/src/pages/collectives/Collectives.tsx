@@ -28,7 +28,7 @@ const Collectives = () => {
 
     useEffect(() => {
         loadCollectives()
-    }, [])
+    }, [contract])
 
     return (
         <>

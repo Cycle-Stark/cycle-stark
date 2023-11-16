@@ -1,7 +1,7 @@
 import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from 'react'
-import { CONTRACT_ABI, CONTRACT_ADDRESS } from '../configs/config'
 import { Contract } from 'starknet'
 import { connect, disconnect } from 'starknetkit'
+import { CONTRACT_ABI, CONTRACT_ADDRESS } from '../configs/config'
 import { modals } from '@mantine/modals'
 import { Text } from '@mantine/core'
 
