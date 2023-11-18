@@ -86,6 +86,7 @@ const CollectiveProvider = (props: ICollectiveProvider) => {
                 const res = await contract.get_collective_heroes(cid)
                 setHeroes(res)
                 checkIfMember(res)
+                setLoadingHeroes(false)
             }
         }
         catch (error: any) {

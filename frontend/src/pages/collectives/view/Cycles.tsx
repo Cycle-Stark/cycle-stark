@@ -8,7 +8,7 @@ import BigNumber from 'bignumber.js'
 import { Helmet } from 'react-helmet'
 import { useCollectiveContext } from '../../../providers/CollectiveProvider'
 import { useAppContext } from '../../../providers/AppProvider'
-import { convertToReadableTokens } from '../../../configs/utils'
+import { bigintToLongStrAddress, convertToReadableTokens } from '../../../configs/utils'
 
 
 const Cycles = () => {
@@ -67,12 +67,16 @@ const Cycles = () => {
         }
         {
           cycles?.map((cycle: any, i: number) => (
-            <Cycle key={`cycle_view_${i}`} {...cycle} receiver='dalmas' date="2023-02-21" amount={`${convertToReadableTokens(BigNumber(raw_collective?.cycle_amount).multipliedBy(cycle.contributions_count), collective?.decimals ?? 18)} ${collective?.symbol}`} total_contributions={BigNumber(cycle?.contributions_count).toNumber()} cycle_id={BigNumber(cycle?.id).toNumber()} />
+            <Cycle key={`cycle_view_${i}`} {...cycle} receiver={bigintToLongStrAddress(cycle?.receiver_hero)} date="2023-02-21" amount={`${convertToReadableTokens(BigNumber(raw_collective?.cycle_amount).multipliedBy(cycle.contributions_count), collective?.decimals ?? 18)} ${collective?.symbol}`} total_contributions={BigNumber(cycle?.contributions_count).toNumber()} cycle_id={BigNumber(cycle?.id).toNumber()} />
           ))
         }
-        <Group>
-          {collective ? <StartCycleBtn collective_id={cid} callBackFn={loadCycles} /> : null}
-        </Group>
+        {
+          collective?.cycles_count >= collective?.hero_count ? null : (
+            <Group>
+              {collective ? <StartCycleBtn collective_id={cid} callBackFn={loadCycles} /> : null}
+            </Group>
+          ) 
+        }
       </Stack>
     </>
   )

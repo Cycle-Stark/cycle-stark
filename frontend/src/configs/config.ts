@@ -1,12 +1,14 @@
 import { connect, disconnect } from 'starknetkit'
 
-import { abi } from '../assets/abi.json'
+// import { abi } from '../assets/abi.json' // main contract abi
+import { abi } from '../assets/abi_v2.json' // main contract abi
 import { erc20abi } from '../assets/erc20abi.json'
 
 // const PRIVATE_KEY = "0x819033027885bc1840b6d564b6e8f68c"
 const ACCOUNT_ADDRESS = "0x77a6390ab3dc3045df373b93bf8b93899c3ad5111da9b66c54b62ddc98e7d4"
 
-const CONTRACT_ADDRESS = "0x10a09eb11dd5cc68012039a1923209413a96eafdefd635ac406231627464328"
+// const CONTRACT_ADDRESS = "0x10a09eb11dd5cc68012039a1923209413a96eafdefd635ac406231627464328" // main contract address
+const CONTRACT_ADDRESS = "0x317b1dfe90ab699ee810138cc1d5b3958a3f1e0cc5c58bb17f69fd6be501670"
 const CONTRACT_ABI = abi
 const ERC20_ABI = erc20abi
 

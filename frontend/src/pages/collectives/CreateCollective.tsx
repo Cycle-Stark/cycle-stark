@@ -6,6 +6,7 @@ import { useState } from "react";
 import { showNotification } from "@mantine/notifications";
 import { useAppContext } from "../../providers/AppProvider";
 import { encoder } from "../../configs/utils";
+import BigNumber from "bignumber.js";
 
 
 interface IColorText {
@@ -48,7 +49,7 @@ const CreateCollective = () => {
             rules: Array(1).fill(RULE),
             name: "",
             aim: "",
-            token: "",
+            token: "0x049D36570D4e46f48e99674bd3fcc84644DdD6b96F7C741B1562B82f9e004dC7",
             amt: 0,
             fine: 0,
             start_date: "",
@@ -118,7 +119,7 @@ const CreateCollective = () => {
         const rule_3 = data?.rules.length > 2 ? data.rules[2].rule : ""
 
         // const token: string = '0x049D36570D4e46f48e99674bd3fcc84644DdD6b96F7C741B1562B82f9e004dC7'
-        const collective_inputs = [encoder(data.name), encoder(rule_1), encoder(rule_2), encoder(rule_3), data.amt, data.fine, data?.token, data.start_date.getTime(), encoder(data.aim), data.decimals, encoder(data.symbol)]
+        const collective_inputs = [encoder(data.name), encoder(rule_1), encoder(rule_2), encoder(rule_3), BigNumber(data.amt).multipliedBy(10 ** data.decimals).toString(), BigNumber(data.fine).multipliedBy(10 ** data.decimals).toString(), data?.token, data.start_date.getTime(), encoder(data.aim), data.decimals, encoder(data.symbol)]
         if (contract) {
             const myCall = contract.populate('register_collective', collective_inputs)
             contract.register_collective(myCall.calldata).then((_res: any) => {

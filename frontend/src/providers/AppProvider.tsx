@@ -30,6 +30,24 @@ const AppProvider = ({ children }: IAppProvider) => {
     const [account, setAccount] = useState<null | any>();
     const [address, setAddress] = useState<null | any>("");
 
+    async function switchNetwork(connection: any) {
+        if (connection && connection.chainId !== "SN_GOERLI") {
+            try {
+                if (window.starknet) {
+                    await window.starknet.request({
+                        type: "wallet_addStarknetChain",
+                        params: {
+                            chainId: "SN_GOERLI"
+                        }
+                    })
+                }
+
+            } catch (error) {
+                alert("Please manually switch your wallet network to testnet and reload the page");
+            }
+        }
+    }
+
     const connectWallet = async () => {
         const connection = await connect({
             webWalletUrl: "https://web.argent.xyz",
@@ -41,6 +59,8 @@ const AppProvider = ({ children }: IAppProvider) => {
             setAccount(connection.account);
             setAddress(connection.selectedAddress);
         }
+
+        switchNetwork(connection)
     };
 
     const disconnectWallet = async () => {
@@ -109,6 +129,8 @@ const AppProvider = ({ children }: IAppProvider) => {
                 setAccount(connection.account);
                 setAddress(connection.selectedAddress);
             }
+            switchNetwork(connection)
+
         };
         connectToStarknet();
     }, []);
