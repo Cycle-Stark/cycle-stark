@@ -4,13 +4,15 @@ import { connect, disconnect } from 'starknetkit'
 import { CONTRACT_ABI, CONTRACT_ADDRESS } from '../configs/config'
 import { modals } from '@mantine/modals'
 import { Text } from '@mantine/core'
+import { useMediaQuery } from '@mantine/hooks'
 
 const initialData = {
     contract: null as any,
     account: null as any,
     address: null as any,
     connection: null as any,
-    handleConnetWalletBtnClick: null as any
+    handleConnetWalletBtnClick: null as any,
+    isSmallScreen: false,
 }
 
 export const AppContext = createContext(initialData)
@@ -29,6 +31,9 @@ const AppProvider = ({ children }: IAppProvider) => {
     const [connection, setConnection] = useState<null | any>();
     const [account, setAccount] = useState<null | any>();
     const [address, setAddress] = useState<null | any>("");
+    const [isSmallScreen, setIsSmallScreen] = useState<boolean | any>(false)
+
+    const matches = useMediaQuery('(max-width: 768px)');
 
     async function switchNetwork(connection: any) {
         if (connection && connection.chainId !== "SN_GOERLI") {
@@ -113,7 +118,8 @@ const AppProvider = ({ children }: IAppProvider) => {
         account,
         address,
         connection,
-        handleConnetWalletBtnClick
+        handleConnetWalletBtnClick,
+        isSmallScreen,
     }), [account, contract, address]);
 
     useEffect(() => {
@@ -138,6 +144,10 @@ const AppProvider = ({ children }: IAppProvider) => {
     useEffect(() => {
         makeContractConnection()
     }, [account, address])
+
+    useEffect(() => {
+        setIsSmallScreen(matches)
+    }, [matches])
 
     return (
         <AppContext.Provider value={contextValue}>

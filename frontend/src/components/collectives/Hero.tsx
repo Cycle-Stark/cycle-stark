@@ -14,7 +14,9 @@ const Hero = (props: IHero) => {
             flexWrap: "nowrap"
         }}>
             <Group align="center" style={{
-            flexWrap: "nowrap"
+            flexWrap: "nowrap",
+            wordBreak: "break-word",
+            wordWrap: "break-word"
         }}>
                 <Avatar radius={'md'}>
                     {getTwoAddressLetters(hero_address)}

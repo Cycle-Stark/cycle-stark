@@ -16,15 +16,16 @@ interface IDataRow {
 
 export const Datarow = (props: IDataRow) => {
   const { title, value, loading } = props
+  const { isSmallScreen } = useAppContext()
 
   return (
-    <Grid>
-      <Grid.Col span={3} >
+    <Grid style={{ wordWrap: "break-word" }} >
+      <Grid.Col span={4} >
         <Stack className="h-100" justify="center">
-          <Title order={3} fw={500}>{title}</Title>
+          <Title order={3} fw={500} fs={isSmallScreen ? "16px" : "32px"}>{title}</Title>
         </Stack>
       </Grid.Col>
-      <Grid.Col span={9}>
+      <Grid.Col span={8}>
         <Stack className="h-100" justify="center">
           {
             loading ? <Skeleton radius={'sm'} height={14} /> : <>{value}</>
@@ -39,11 +40,11 @@ const CollectiveInfo = () => {
 
   const { cid } = useParams()
 
-  const {collective, isCollectiveFound, isCollectiveLoading} = useCollectiveContext()
-  const {address} = useAppContext()
+  const { collective, isCollectiveFound, isCollectiveLoading } = useCollectiveContext()
+  const { address } = useAppContext()
 
   const loading = isCollectiveLoading
-  
+
   const reloadPage = () => {
     window.location.reload()
   }

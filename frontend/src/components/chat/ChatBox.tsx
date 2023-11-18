@@ -162,13 +162,13 @@ const ChatBox = (props: IChat) => {
                 <Stack className="h-100 w-100" justify="center">
                     <form onSubmit={form.onSubmit(_values => sendMessage())}>
                         <Grid>
-                            <Grid.Col span={11}>
+                            <Grid.Col span={10}>
                                 <Textarea placeholder="Type here" autosize maxRows={2} radius={'lg'} size="md" {...form.getInputProps('msg')} onKeyDown={getHotkeyHandler([
                                     ['Enter', sendMessage],
                                     // ['mod+S', handleSave],
                                 ])} />
                             </Grid.Col>
-                            <Grid.Col span={1}>
+                            <Grid.Col span={2}>
                                 <Stack className="h-100" justify="center" align="center">
                                     <ActionIcon mb={0} variant="light" size={'xl'} radius={'xl'} type="submit">
                                         <IconSend stroke={1.5} />

@@ -10,6 +10,13 @@ body {
   overflow: hidden;
 }
 
+@media screen and (max-width: 768px) {
+  body{
+    max-height: auto;
+    overflow-y: auto;
+  }
+}
+
 @keyframes gradientBackground {
   0% {
     background-position: 0% 50%;

@@ -4,24 +4,30 @@ import TopBarNavigation from "../components/navigation/TopBarNavigation";
 import CycleStarkLogo from "../components/others/CycleStarkLogo";
 import { Notifications } from '@mantine/notifications';
 import React from "react";
-import AppProvider from "../providers/AppProvider";
+import AppProvider, { useAppContext } from "../providers/AppProvider";
 import { ModalsProvider } from '@mantine/modals';
 
 interface IWrapperCard {
     children: React.ReactNode
 }
 const WrapperCard = ({ children }: IWrapperCard) => {
-
+    const { isSmallScreen } = useAppContext()
     return (
         <Card p={0} style={{
             borderRadius: "0 0 20px 20px",
-            height: "600px",
+            height: isSmallScreen ? "auto" : "600px",
         }}>
-            <ScrollArea className="h-100">
-                <Box p="sm">
+            {
+                isSmallScreen ? (<Box p={isSmallScreen ? "xs" : "sm"}>
                     {children}
-                </Box>
-            </ScrollArea>
+                </Box>) : (
+                    <ScrollArea className="h-100">
+                        <Box p="sm">
+                            {children}
+                        </Box>
+                    </ScrollArea>
+                )
+            }
         </Card>
     )
 }
@@ -29,12 +35,13 @@ const WrapperCard = ({ children }: IWrapperCard) => {
 
 const MainLayout = (props: any) => {
     const { children } = props
+    const { isSmallScreen } = useAppContext()
     return (
         <MantineProvider theme={theme} defaultColorScheme="light">
             <ModalsProvider>
                 <AppProvider>
                     <Notifications />
-                    <Container size={'xl'} py={70} className="behind-screen">
+                    <Container size={'xl'} px={isSmallScreen ? "xs" : "01"} py={70} className="behind-screen">
                         <div style={{
                             boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
                             // transform: "perspective(500px) skewY(15deg, -35deg)"

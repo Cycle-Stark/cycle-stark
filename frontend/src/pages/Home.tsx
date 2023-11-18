@@ -1,20 +1,23 @@
 import { Box, Breadcrumbs, Button, Card, Center, Grid, Image, Stack, Text, Title, useMantineColorScheme } from "@mantine/core"
 import { isDarkMode } from "../configs/utils"
+import { useAppContext } from "../providers/AppProvider"
 
 
 const Home = () => {
     const { colorScheme } = useMantineColorScheme()
+    const { isSmallScreen } = useAppContext()
+    const textSize = isSmallScreen ? "22px" : "32px"
 
     return (
         <>
-            <Stack>
+            <Stack px={0}>
                 <Card py={80} radius={'lg'} className="home-card" style={theme => ({
                     background: isDarkMode(colorScheme) ? theme.colors.dark[5] : theme.colors.gray[2]
                 })}>
                     <Grid>
                         <Grid.Col span={{ md: 6 }}>
                             <Stack style={{ height: "400px" }} justify="center">
-                                <Title order={1} size={62} className="custom-title" style={{
+                                <Title order={1} size={isSmallScreen ? 52 : 62} className="custom-title" style={{
                                     fontWeight: 600
                                 }}> CycleStark</Title>
                                 <Title order={2} size={32} className="custom-title" style={{
@@ -79,22 +82,22 @@ const Home = () => {
                     <Box mt="xl">
                         <Breadcrumbs separator={<Image src={'/images/arrow.png'} maw={'40px'} />} style={{ flexWrap: "wrap" }} separatorMargin={"lg"}>
                             <Box className={`custom-box ${isDarkMode(colorScheme) ? '' : 'clip-text'}`} p={20} mb={'md'}>
-                                <Text size="32px">Create Collective</Text>
+                                <Text size={textSize}>Create Collective</Text>
                             </Box>
                             <Box className={`custom-box ${isDarkMode(colorScheme) ? '' : 'clip-text'}`} p={20} mb={'md'}>
-                                <Text size="32px">Heroes Join</Text>
+                                <Text size={textSize}>Heroes Join</Text>
                             </Box>
                             <Box className={`custom-box ${isDarkMode(colorScheme) ? '' : 'clip-text'}`} p={20} mb={'md'}>
-                                <Text size="32px">Lock Starks</Text>
+                                <Text size={textSize}>Lock Starks</Text>
                             </Box>
                             <Box className={`custom-box ${isDarkMode(colorScheme) ? '' : 'clip-text'}`} p={20} mb={'md'}>
-                                <Text size="32px">Start Cyles</Text>
+                                <Text size={textSize}>Start Cyles</Text>
                             </Box>
                             <Box className={`custom-box ${isDarkMode(colorScheme) ? '' : 'clip-text'}`} p={20} mb={'md'}>
-                                <Text size="32px">Finish Cyles</Text>
+                                <Text size={textSize}>Finish Cyles</Text>
                             </Box>
                             <Box className={`custom-box ${isDarkMode(colorScheme) ? '' : 'clip-text'}`} p={20} mb={'md'}>
-                                <Text size="32px">Withdraw Locked Starks</Text>
+                                <Text size={textSize} style={{ wordWrap: "break-word" }}>Withdraw Locked Starks</Text>
                             </Box>
                         </Breadcrumbs>
                     </Box>
@@ -193,8 +196,8 @@ const Home = () => {
                 </Box>
 
                 <Box py={100}>
-                    <Title style={{textAlign: "center"}} size={"100px"} className="custom-title">Get Started </Title>
-                    <Text style={{textAlign: "center"}} maw={800} mx={"auto"}>
+                    <Title style={{ textAlign: "center" }} size={"100px"} className="custom-title">Get Started </Title>
+                    <Text style={{ textAlign: "center" }} maw={800} mx={"auto"}>
                         Ready to join the cycle? Become a hero today and embark on a journey of collective empowerment. Register now and start funding and receiving support within our cyclical ecosystem. Take the first step towards making a meaningful impact!
                     </Text>
                     <Center py={30}>
