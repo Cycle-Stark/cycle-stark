@@ -16,6 +16,7 @@ const WrapperCard = ({ children }: IWrapperCard) => {
         <Card p={0} style={{
             borderRadius: "0 0 20px 20px",
             height: isSmallScreen ? "auto" : "600px",
+            overflowX: "hidden"
         }}>
             {
                 isSmallScreen ? (<Box p={isSmallScreen ? "xs" : "sm"}>
@@ -31,7 +32,7 @@ const WrapperCard = ({ children }: IWrapperCard) => {
         </Card>
     )
 }
-
+ 
 
 const MainLayout = (props: any) => {
     const { children } = props

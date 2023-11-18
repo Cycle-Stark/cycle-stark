@@ -196,7 +196,7 @@ const Home = () => {
                 </Box>
 
                 <Box py={100}>
-                    <Title style={{ textAlign: "center" }} size={"100px"} className="custom-title">Get Started </Title>
+                    <Title style={{ textAlign: "center" }} size={isSmallScreen ? "50px" : "100px"} className="custom-title">Get Started </Title>
                     <Text style={{ textAlign: "center" }} maw={800} mx={"auto"}>
                         Ready to join the cycle? Become a hero today and embark on a journey of collective empowerment. Register now and start funding and receiving support within our cyclical ecosystem. Take the first step towards making a meaningful impact!
                     </Text>
