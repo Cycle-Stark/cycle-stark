@@ -35,11 +35,9 @@ const Home = () => {
                 <Box py={50}>
                     <Grid>
                         <Grid.Col span={{ md: 6 }}>
-                            <Card>
-                                <Center>
-                                    <Image src={'/images/glassy-pie.png'} maw={"70%"} />
-                                </Center>
-                            </Card>
+                            <Center>
+                                <Image src={'/images/glassy-pie.png'} maw={"70%"} />
+                            </Center>
                         </Grid.Col>
                         <Grid.Col span={{ md: 6 }}>
                             <Stack className="h-100" justify="center">
@@ -74,23 +72,21 @@ const Home = () => {
                             </Stack>
                         </Grid.Col>
                         <Grid.Col span={{ md: 5 }}>
-                            <Card>
-                                <Center>
-                                    <Image src={'/images/gif1.gif'} maw={"70%"} />
-                                </Center>
-                            </Card>
+                            <Center>
+                                <Image src={'/images/gif1.gif'} maw={"70%"} />
+                            </Center>
                         </Grid.Col>
                     </Grid>
                     <Box mt="xl">
                         <Center>
-                            <Stepper icon={<IconArrowDown />} completedIcon={<IconArrowDown />} active={8} onStepClick={() => { }} orientation="vertical" >
-                                <Stepper.Step label="Connect wallet" description="Create an account" />
-                                <Stepper.Step label="Create Collective" description="Create an account" />
-                                <Stepper.Step label="Heroes Join" description="Verify email" />
-                                <Stepper.Step label="Lock Starks" description="Get full access" />
-                                <Stepper.Step label="Start Cycles" description="Get full access" />
-                                <Stepper.Step label="Finish Cycles" description="Get full access" />
-                                <Stepper.Step label="Withdraw Locked Starks" description="Get full access" />
+                            <Stepper iconPosition="right" icon={<IconArrowDown />} completedIcon={<IconArrowDown />} active={8} onStepClick={() => { }} orientation="vertical" >
+                                <Stepper.Step label="Connect wallet" description="Use ArgentX or Braavos onnect your wallet to have access to all parts." />
+                                <Stepper.Step label="Create Collective" description="Create a collective for your group." />
+                                <Stepper.Step label="Heroes Join" description="Share the collective link, and let others join." />
+                                <Stepper.Step label="Lock Starks" description="Everybody locks before the first cycle starts." />
+                                <Stepper.Step label="Start Cycles" description="The cycles are initiated by the collective creator and managed by him/her." />
+                                <Stepper.Step label="Finish Cycles" description="Every cycle ends with 1 of the members being awarded." />
+                                <Stepper.Step label="Withdraw Locked Starks" description="Withdraw the locked starks to close the collective." />
                             </Stepper>
                         </Center>
                     </Box>
@@ -142,11 +138,9 @@ const Home = () => {
                 <Box py={50}>
                     <Grid>
                         <Grid.Col span={{ md: 6 }}>
-                            <Card>
-                                <Center>
-                                    <Image src={'/images/blocks1.png'} maw={"70%"} />
-                                </Center>
-                            </Card>
+                            <Center>
+                                <Image src={'/images/blocks1.png'} maw={"70%"} />
+                            </Center>
                         </Grid.Col>
                         <Grid.Col span={{ md: 6 }}>
                             <Stack className="h-100" justify="center">
@@ -179,11 +173,9 @@ const Home = () => {
                             </Stack>
                         </Grid.Col>
                         <Grid.Col span={{ md: 6 }}>
-                            <Card>
-                                <Center>
-                                    <Image src={'/images/community.png'} maw={"70%"} />
-                                </Center>
-                            </Card>
+                            <Center>
+                                <Image src={'/images/community.png'} maw={"70%"} />
+                            </Center>
                         </Grid.Col>
                     </Grid>
                 </Box>
