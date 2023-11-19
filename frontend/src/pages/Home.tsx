@@ -1,7 +1,7 @@
-import { Box, Button, Card, Center, Grid, Image, Stack, Stepper, Text, Timeline, Title, useMantineColorScheme } from "@mantine/core"
+import { Blockquote, Box, Button, Card, Center, Container, Grid, Image, Stack, Text, Timeline, Title, useMantineColorScheme } from "@mantine/core"
 import { isDarkMode } from "../configs/utils"
 import { useAppContext } from "../providers/AppProvider"
-import { IconArrowDown } from "@tabler/icons-react"
+import { IconInfoCircle } from "@tabler/icons-react"
 
 
 const Home = () => {
@@ -32,6 +32,12 @@ const Home = () => {
                         </Grid.Col>
                     </Grid>
                 </Card>
+                <Container>
+                    <Blockquote color="red" cite="– Developer" icon={<IconInfoCircle />} mt="xl">
+                        <Title order={3}>Don't miss this!</Title>
+                        Cycle Stark is running on Testnet. To work around it well, we encourage you to use your PC and install ArgentX or Braavos wallets to interact with it on testnet
+                    </Blockquote>
+                </Container>
                 <Box py={50}>
                     <Grid>
                         <Grid.Col span={{ md: 6 }}>

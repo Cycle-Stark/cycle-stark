@@ -24,7 +24,7 @@ const CustomAppShell = (props: ICustomAppShell) => {
                 <Container size={'xl'} className='h-100'>
                     <Group align='center' className='h-100' justify='space-between'>
                         <Link to={'/'}>
-                            <Image src={'/images/icon1.png'} h={'40px'} />
+                            <Image src={'/images/icon1.png'} h={'460px'} />
                         </Link>
                         {
                             !matches ? (
