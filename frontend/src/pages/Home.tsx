@@ -1,4 +1,4 @@
-import { Box, Button, Card, Center, Grid, Image, Stack, Stepper, Text, Title, useMantineColorScheme } from "@mantine/core"
+import { Box, Button, Card, Center, Grid, Image, Stack, Stepper, Text, Timeline, Title, useMantineColorScheme } from "@mantine/core"
 import { isDarkMode } from "../configs/utils"
 import { useAppContext } from "../providers/AppProvider"
 import { IconArrowDown } from "@tabler/icons-react"
@@ -79,15 +79,33 @@ const Home = () => {
                     </Grid>
                     <Box mt="xl">
                         <Center>
-                            <Stepper iconPosition="right" icon={<IconArrowDown />} completedIcon={<IconArrowDown />} active={8} onStepClick={() => { }} orientation="vertical" >
-                                <Stepper.Step label="Connect wallet" description="Use ArgentX or Braavos onnect your wallet to have access to all parts." />
-                                <Stepper.Step label="Create Collective" description="Create a collective for your group." />
-                                <Stepper.Step label="Heroes Join" description="Share the collective link, and let others join." />
-                                <Stepper.Step label="Lock Starks" description="Everybody locks before the first cycle starts." />
-                                <Stepper.Step label="Start Cycles" description="The cycles are initiated by the collective creator and managed by him/her." />
-                                <Stepper.Step label="Finish Cycles" description="Every cycle ends with 1 of the members being awarded." />
-                                <Stepper.Step label="Withdraw Locked Starks" description="Withdraw the locked starks to close the collective." />
-                            </Stepper>
+                            <Card py={80} radius={'lg'} className="home-card" style={theme => ({
+                                background: isDarkMode(colorScheme) ? theme.colors.dark[5] : theme.colors.gray[2]
+                            })}>
+                                <Timeline active={8} align="right">
+                                    <Timeline.Item title="Connect wallet"  >
+                                        <Text>Use ArgentX or Braavos onnect your wallet to have access to all parts.</Text>
+                                    </Timeline.Item>
+                                    <Timeline.Item title="Create Collective">
+                                        <Text>Create a collective for your group.</Text>
+                                    </Timeline.Item>
+                                    <Timeline.Item title="Heroes Join"  >
+                                        <Text>Share the collective link, and let others join.</Text>
+                                    </Timeline.Item>
+                                    <Timeline.Item title="Lock Starks" >
+                                        <Text>Everybody locks before the first cycle starts.</Text>
+                                    </Timeline.Item>
+                                    <Timeline.Item title="Start Cycles"  >
+                                        <Text>The cycles are initiated by the collective creator and managed by him/her.</Text>
+                                    </Timeline.Item>
+                                    <Timeline.Item title="Finish Cycles"  >
+                                        <Text>Every cycle ends with 1 of the members being awarded.</Text>
+                                    </Timeline.Item>
+                                    <Timeline.Item title="Withdraw Locked Starks"  >
+                                        <Text>Withdraw the locked starks to close the collective.</Text>
+                                    </Timeline.Item>
+                                </Timeline>
+                            </Card>
                         </Center>
                     </Box>
                 </Box>
