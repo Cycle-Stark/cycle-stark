@@ -5,8 +5,8 @@ import ConnectWalletBtn from '../components/navigation/ConnectWalletBtn'
 import CustomNavLink, { ICustomNavLinkProps, navlinks } from '../components/navigation/CustomNavLink'
 import { isDarkMode } from '../configs/utils'
 import { Link } from 'react-router-dom'
-import { useAppContext } from '../providers/AppProvider'
 import SmallScreenMenu from '../components/navigation/SmallScreenMenu'
+import { useMediaQuery } from '@mantine/hooks'
 
 interface ICustomAppShell {
     children: ReactNode
@@ -14,8 +14,9 @@ interface ICustomAppShell {
 
 const CustomAppShell = (props: ICustomAppShell) => {
     const { children } = props
+
     const { colorScheme, setColorScheme } = useMantineColorScheme()
-    const { isSmallScreen } = useAppContext()
+    const matches = useMediaQuery('(max-width: 768px)');
 
     return (
         <AppShell header={{ height: { base: 60, md: 80 } }}>
@@ -25,8 +26,9 @@ const CustomAppShell = (props: ICustomAppShell) => {
                         <Link to={'/'}>
                             <Image src={'/images/icon1.png'} h={'40px'} />
                         </Link>
+                        {matches?.toString()}
                         {
-                            !isSmallScreen ? (
+                            !matches ? (
                                 <Group>
                                     {
                                         navlinks?.map((link: ICustomNavLinkProps, i: number) => (
@@ -42,7 +44,7 @@ const CustomAppShell = (props: ICustomAppShell) => {
                                 {isDarkMode(colorScheme) ? <IconSun /> : <IconMoon />}
                             </ActionIcon>
                             {
-                                isSmallScreen ? <SmallScreenMenu /> : null
+                                matches ? <SmallScreenMenu /> : null
                             }
                         </Group>
                     </Group>

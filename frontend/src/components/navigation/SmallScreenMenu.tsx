@@ -1,12 +1,6 @@
-import { Menu, Text, rem, ActionIcon } from '@mantine/core';
+import { Menu, rem, ActionIcon } from '@mantine/core';
 import {
-    IconSearch,
-    IconPhoto,
-    IconMessageCircle,
-    IconTrash,
-    IconArrowsLeftRight,
     IconMenu2,
-    IconWallet,
     IconWalletOff,
 } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
@@ -17,7 +11,7 @@ export default function SmallScreenMenu() {
     const { handleConnetWalletBtnClick, address } = useAppContext()
 
     return (
-        <Menu shadow="md" width={200} position='bottom-end' withArrow radius={'lg'}>
+        <Menu shadow="md" width={200} position='bottom-end' radius={'lg'}>
             <Menu.Target>
                 <ActionIcon variant='light'>
                     <IconMenu2 />
