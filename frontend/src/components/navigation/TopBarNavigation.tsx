@@ -39,7 +39,6 @@ const TopBarNavigation = () => {
         }}>
             <Group align='center' justify='space-between'>
                 <Group>
-                    {/* <Image src={'/images/logo.png'} w={'200px'} /> */}
                     <Image src={'/images/icon1.png'} h={'60px'} />
                     {
                         navlinks?.map((link: ICustomNavLinkProps, i: number) => (

@@ -5,10 +5,12 @@ import { useAppContext } from "../../providers/AppProvider"
 
 const ConnectWalletBtn = () => {
     const { handleConnetWalletBtnClick, address } = useAppContext()
+    const { isSmallScreen } = useAppContext()
+
     return (
-        <Button h={42} variant='outline' radius={'xl'} leftSection={<IconWallet stroke={1.5} />} onClick={handleConnetWalletBtnClick}>
+        <Button h={42} variant='outline' radius={'xl'} size="xs" leftSection={<IconWallet stroke={1.5} />} onClick={handleConnetWalletBtnClick}>
             {
-                address ? limitChars(address, 10, true) : 'Connect wallet'
+                address ? limitChars(address, isSmallScreen ? 5 : 10, isSmallScreen ? false : true) : 'Connect'
             }
         </Button>
     )

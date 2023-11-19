@@ -3,11 +3,11 @@
 body {
   /* animation: gradientBackground 10s linear infinite; */
   background-size: cover;
-  background-image: linear-gradient(45deg, rgba(255, 192, 203, 0.582), rgba(255, 255, 255, 0.3), rgba(0, 0, 255, 0.445), rgba(255, 166, 0, 0.281), rgba(255, 167, 181, 0.459)), url('/images/bg1.jpg');
+  /* background-image: linear-gradient(45deg, rgba(255, 192, 203, 0.582), rgba(255, 255, 255, 0.3), rgba(0, 0, 255, 0.445), rgba(255, 166, 0, 0.281), rgba(255, 167, 181, 0.459)), url('/images/bg1.jpg'); */
   font-family: 'Space Grotesk', sans-serif;
   background-repeat: no-repeat;
-  max-height: 100vh;
-  overflow: hidden;
+  /* max-height: 100vh;
+  overflow: hidden; */
 }
 
 @media screen and (max-width: 768px) {

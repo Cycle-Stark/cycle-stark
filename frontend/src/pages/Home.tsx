@@ -1,16 +1,18 @@
-import { Box, Breadcrumbs, Button, Card, Center, Grid, Image, Stack, Text, Title, useMantineColorScheme } from "@mantine/core"
+import { Box, Button, Card, Center, Grid, Image, Stack, Stepper, Text, Title, useMantineColorScheme } from "@mantine/core"
 import { isDarkMode } from "../configs/utils"
 import { useAppContext } from "../providers/AppProvider"
+import { IconArrowDown } from "@tabler/icons-react"
 
 
 const Home = () => {
     const { colorScheme } = useMantineColorScheme()
     const { isSmallScreen } = useAppContext()
-    const textSize = isSmallScreen ? "22px" : "32px"
 
     return (
         <>
-            <Stack px={0}>
+            <Stack px={0} style={{
+                overflowX: "hidden"
+            }}>
                 <Card py={80} radius={'lg'} className="home-card" style={theme => ({
                     background: isDarkMode(colorScheme) ? theme.colors.dark[5] : theme.colors.gray[2]
                 })}>
@@ -80,26 +82,17 @@ const Home = () => {
                         </Grid.Col>
                     </Grid>
                     <Box mt="xl">
-                        <Breadcrumbs separator={<Image src={'/images/arrow.png'} maw={'40px'} />} style={{ flexWrap: "wrap" }} separatorMargin={"lg"}>
-                            <Box className={`custom-box ${isDarkMode(colorScheme) ? '' : 'clip-text'}`} p={20} mb={'md'}>
-                                <Text size={textSize}>Create Collective</Text>
-                            </Box>
-                            <Box className={`custom-box ${isDarkMode(colorScheme) ? '' : 'clip-text'}`} p={20} mb={'md'}>
-                                <Text size={textSize}>Heroes Join</Text>
-                            </Box>
-                            <Box className={`custom-box ${isDarkMode(colorScheme) ? '' : 'clip-text'}`} p={20} mb={'md'}>
-                                <Text size={textSize}>Lock Starks</Text>
-                            </Box>
-                            <Box className={`custom-box ${isDarkMode(colorScheme) ? '' : 'clip-text'}`} p={20} mb={'md'}>
-                                <Text size={textSize}>Start Cyles</Text>
-                            </Box>
-                            <Box className={`custom-box ${isDarkMode(colorScheme) ? '' : 'clip-text'}`} p={20} mb={'md'}>
-                                <Text size={textSize}>Finish Cyles</Text>
-                            </Box>
-                            <Box className={`custom-box ${isDarkMode(colorScheme) ? '' : 'clip-text'}`} p={20} mb={'md'}>
-                                <Text size={textSize} style={{ wordWrap: "break-word" }}>Withdraw Locked Starks</Text>
-                            </Box>
-                        </Breadcrumbs>
+                        <Center>
+                            <Stepper icon={<IconArrowDown />} completedIcon={<IconArrowDown />} active={8} onStepClick={() => { }} orientation="vertical" >
+                                <Stepper.Step label="Connect wallet" description="Create an account" />
+                                <Stepper.Step label="Create Collective" description="Create an account" />
+                                <Stepper.Step label="Heroes Join" description="Verify email" />
+                                <Stepper.Step label="Lock Starks" description="Get full access" />
+                                <Stepper.Step label="Start Cycles" description="Get full access" />
+                                <Stepper.Step label="Finish Cycles" description="Get full access" />
+                                <Stepper.Step label="Withdraw Locked Starks" description="Get full access" />
+                            </Stepper>
+                        </Center>
                     </Box>
                 </Box>
 
@@ -196,7 +189,7 @@ const Home = () => {
                 </Box>
 
                 <Box py={100}>
-                    <Title style={{ textAlign: "center" }} size={isSmallScreen ? "50px" : "100px"} className="custom-title">Get Started </Title>
+                    <Title style={{ textAlign: "center" }} size={'62px'} className="custom-title">Get Started </Title>
                     <Text style={{ textAlign: "center" }} maw={800} mx={"auto"}>
                         Ready to join the cycle? Become a hero today and embark on a journey of collective empowerment. Register now and start funding and receiving support within our cyclical ecosystem. Take the first step towards making a meaningful impact!
                     </Text>
