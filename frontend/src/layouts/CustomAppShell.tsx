@@ -26,7 +26,6 @@ const CustomAppShell = (props: ICustomAppShell) => {
                         <Link to={'/'}>
                             <Image src={'/images/icon1.png'} h={'40px'} />
                         </Link>
-                        {matches?.toString()}
                         {
                             !matches ? (
                                 <Group>
