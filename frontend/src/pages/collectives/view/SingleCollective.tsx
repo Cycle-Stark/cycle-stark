@@ -25,19 +25,19 @@ const SingleCollective = () => {
                 <CollectiveTitle />
                 <Grid align="start">
                     <Grid.Col span={{ md: 4, xs: 12 }}>
-                        <Stack gap={4} p="xs">
+                        <Stack gap={4} p="xs" py="lg">
                             <CustomTabLink to={`/collectives/${cid}/heroes`} title="Heroes" icon={<IconUsersGroup stroke={1.5} />} color={theme.colors.blue[6]} />
                             <CustomTabLink to={`/collectives/${cid}/cycles`} title="Cycles" icon={<IconRepeat stroke={1.5} />} color={theme.colors.green[6]} />
                             <CustomTabLink to={`/collectives/${cid}/info`} title="Info" icon={<IconInfoCircle stroke={1.5} />} color={theme.colors.violet[6]} />
                             <CustomTabLink to={`/collectives/${cid}/chat`} title="chat" icon={<IconMessage stroke={1.5} />} color={theme.colors.grape[6]} />
                         </Stack>
                     </Grid.Col>
-                    <Grid.Col span={{ md: 8, xs: 12 }}>
+                    <Grid.Col span={{ md: 8, xs: 12 }} py={'lg'}>
                         <Box p={"xs"} style={theme => ({
                             flex: 1,
                             background: isDarkMode(colorScheme) ? theme.colors.dark[5] : theme.colors.gray[2],
-                            borderRadius: theme.radius.md,
-                            minHeight: "400px"
+                            borderRadius: theme.radius.lg,
+                            minHeight: "400px",
                         })}>
                             <Outlet />
                         </Box>

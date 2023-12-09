@@ -30,7 +30,7 @@ const Cycle = (props: ICycle) => {
     const [loading, setLoading] = useState(false)
     const { cid } = useParams()
     const { contract, address } = useAppContext()
-    const { collective, isMember, isOwner } = useCollectiveContext()
+    const { collective, isMember, isOwner, tokenPrice } = useCollectiveContext()
 
 
     async function loadContributions() {
@@ -110,7 +110,7 @@ const Cycle = (props: ICycle) => {
                                         <>
                                             {
                                                 contributions?.map((contribution: any, i: any) => (
-                                                    <Contribution key={`contribution_${i}`} {...contribution} decimals={collective?.decimals} symbol={collective?.symbol} />
+                                                    <Contribution key={`contribution_${i}`} {...contribution} decimals={collective?.decimals} symbol={collective?.symbol} tokenPrice={tokenPrice} />
                                                 ))
                                             }
                                         </>

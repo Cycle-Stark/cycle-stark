@@ -2,6 +2,8 @@ import { Blockquote, Box, Button, Card, Center, Container, Grid, Image, Stack, T
 import { isDarkMode } from "../configs/utils"
 import { useAppContext } from "../providers/AppProvider"
 import { IconInfoCircle } from "@tabler/icons-react"
+import { AssetPreview } from "../components/tokens/SelectTokenModal"
+
 
 
 const Home = () => {
@@ -34,9 +36,12 @@ const Home = () => {
                 </Card>
                 <Container>
                     <Blockquote color="red" cite="– Developer" icon={<IconInfoCircle />} mt="xl">
-                        <Title order={3}>Don't miss this!</Title>
+                        <Title order={3}>Important Notice!</Title>
                         Cycle Stark is running on Testnet. To work around it well, we encourage you to use your PC and install ArgentX or Braavos wallets to interact with it on testnet
                     </Blockquote>
+                </Container>
+                <Container py={{xs: '50px', md: '200px', }}>
+                    <AssetPreview />
                 </Container>
                 <Box py={50}>
                     <Grid>

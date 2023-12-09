@@ -5,8 +5,10 @@ import { useForm } from "@mantine/form"
 import { useState } from "react";
 import { showNotification } from "@mantine/notifications";
 import { useAppContext } from "../../providers/AppProvider";
-import { encoder } from "../../configs/utils";
+import { formatNumberInternational } from "../../configs/utils";
 import BigNumber from "bignumber.js";
+import SelectTokenModal from "../../components/tokens/SelectTokenModal";
+import TOKENS, { Token } from "../../configs/tokens";
 
 
 interface IColorText {
@@ -49,15 +51,17 @@ const CreateCollective = () => {
             rules: Array(1).fill(RULE),
             name: "",
             aim: "",
-            token: "0x049D36570D4e46f48e99674bd3fcc84644DdD6b96F7C741B1562B82f9e004dC7",
+            // token: "0x049D36570D4e46f48e99674bd3fcc84644DdD6b96F7C741B1562B82f9e004dC7",
+            token: TOKENS[0],
             amt: 0,
             fine: 0,
             start_date: "",
             decimals: 0,
             symbol: "",
+            token_price: 0,
         },
         validate: {
-            name: value => {
+            name: (value: any) => {
                 if (value === "") {
                     return "Enter collective name"
                 }
@@ -75,18 +79,7 @@ const CreateCollective = () => {
                 }
                 return null
             },
-            symbol: value => {
-                if (value === "") {
-                    return "Enter token symbol"
-                }
-                else if (value.length > 30) {
-                    return "Symbol cannot be more than 30 characters"
-                }
-                return null
-            },
-            token: value => value === "" ? "Collective Token address required" : null,
             amt: value => value === 0 ? "Cycle amount is required" : null,
-            decimals: value => value === 0 ? "Decimals are required" : null,
             start_date: value => value === "" ? "Start date is required" : null,
             rules: {
                 rule: value => {
@@ -115,14 +108,25 @@ const CreateCollective = () => {
         // contract.connect(account)
 
         const rule_1 = data.rules[0].rule
-        const rule_2 = data?.rules.length > 1 ? data.rules[1].rule : ""
-        const rule_3 = data?.rules.length > 2 ? data.rules[2].rule : ""
+        const rule_2 = data?.rules.length > 1 ? data.rules[1].rule : "N/A"
+        const rule_3 = data?.rules.length > 2 ? data.rules[2].rule : "N/A"
 
         // const token: string = '0x049D36570D4e46f48e99674bd3fcc84644DdD6b96F7C741B1562B82f9e004dC7'
-        const collective_inputs = [encoder(data.name), encoder(rule_1), encoder(rule_2), encoder(rule_3), BigNumber(data.amt).multipliedBy(10 ** data.decimals).toString(), BigNumber(data.fine).multipliedBy(10 ** data.decimals).toString(), data?.token, data.start_date.getTime(), encoder(data.aim), data.decimals, encoder(data.symbol)]
+
+        const collective_inputs = [
+            data.name,
+            rule_1, rule_2,
+            rule_3,
+            BigNumber(data.amt).multipliedBy(10 ** data?.token.decimals).toNumber(),
+            BigNumber(data.fine).multipliedBy(10 ** data?.token.decimals).toNumber(),
+            data?.token.address,
+            data.start_date.getTime(), data.aim,
+            data?.token.decimals, data?.token.symbol]
+        console.log(collective_inputs)
         if (contract) {
             const myCall = contract.populate('register_collective', collective_inputs)
-            contract.register_collective(myCall.calldata).then((_res: any) => {
+            console.log(myCall.calldata)
+            contract.register_collective(myCall.calldata).then(() => {
                 showNotification({
                     title: "Success",
                     message: "You have successfully created a new collective",
@@ -132,12 +136,14 @@ const CreateCollective = () => {
                 form.reset()
 
             }).catch((_error: any) => {
+                console.trace(_error)
                 showNotification({
                     title: "Failed!!",
                     message: "Creating a new collective has failed",
                     color: "red",
                     icon: <IconAlertTriangle stroke={1.5} />
                 })
+                setLoading(false)
             }).finally(() => {
                 setLoading(false)
             })
@@ -171,8 +177,24 @@ const CreateCollective = () => {
         }
     }
 
+    const selectToken = (token: Token) => {
+        form.setFieldValue('token', token)
+    }
+
+    const seTokenPrice = (price: number) => {
+        form.setFieldValue('token_price', price)
+    }
+
     // 2 ETH -> 2000000000000000000
     // 0.000002 ETH-> 20000000000000
+
+    const calculateAmt = (value: number) => {
+        if (form.values.token_price) {
+            const amt = BigNumber(value).multipliedBy(form.values.token_price).toNumber()
+            return amt
+        }
+        return null
+    }
 
     return (
         <Stack>
@@ -214,7 +236,11 @@ const CreateCollective = () => {
                                 </Group>
                             </Stack>
                         </Grid.Col>
-                        <Grid.Col span={{ md: 4 }}>
+                        <Grid.Col span={12}>
+                            <Text fw={500} fs={'md'}>Select Token</Text>
+                            <SelectTokenModal selectedToken={form.values.token} select={selectToken} seTokenPrice={seTokenPrice} />
+                        </Grid.Col>
+                        {/* <Grid.Col span={{ md: 4 }}>
                             <TextInput label={"Token"} radius={'md'} placeholder="Token Address: 0x00fdkb..." {...form.getInputProps('token')} styles={styles} />
                         </Grid.Col>
                         <Grid.Col span={{ md: 4 }}>
@@ -222,12 +248,12 @@ const CreateCollective = () => {
                         </Grid.Col>
                         <Grid.Col span={{ md: 4 }}>
                             <TextInput label={"Token Symbol"} radius={'md'} placeholder="Token Symbol: ETH" {...form.getInputProps('symbol')} styles={styles} />
+                        </Grid.Col> */}
+                        <Grid.Col span={{ md: 6 }}>
+                            <NumberInput label={`Amount / cycle ≈ $${formatNumberInternational(calculateAmt(form.values.amt) ?? 0)}`} hideControls radius={'md'} placeholder="200 STRK" {...form.getInputProps('amt')} styles={styles} />
                         </Grid.Col>
-                        <Grid.Col span={{ md: 4 }}>
-                            <NumberInput label={"Amount / cycle"} hideControls radius={'md'} placeholder="200 STRK" {...form.getInputProps('amt')} styles={styles} />
-                        </Grid.Col>
-                        <Grid.Col span={{ md: 4 }}>
-                            <NumberInput label={"Fine / cycle"} hideControls radius={'md'} placeholder="20 STRK" {...form.getInputProps('fine')} styles={styles} />
+                        <Grid.Col span={{ md: 6 }}>
+                            <NumberInput label={`Fine / cycle≈ $${formatNumberInternational(calculateAmt(form.values.fine) ?? 0)}`} hideControls radius={'md'} placeholder="20 STRK" {...form.getInputProps('fine')} styles={styles} />
                         </Grid.Col>
                         <Grid.Col span={{ md: 4 }}>
                             <DateTimePicker label={"Start Date"} radius={'md'} minDate={new Date()} placeholder="Start Date" {...form.getInputProps('start_date')} clearable styles={styles} />

@@ -1,6 +1,6 @@
 import { Alert, Button, Grid, Group, Skeleton, Stack, Text, Title } from "@mantine/core"
 import { useParams } from "react-router-dom"
-import { timeStampToDate } from "../../../configs/utils"
+import { formatNumberInternational, timeStampToDate } from "../../../configs/utils"
 import { IconAlertTriangle, IconCheck, IconX } from "@tabler/icons-react"
 import BigNumber from "bignumber.js"
 import CloseRegistrationsBtn from "../../../components/collectives/CloseRegistrationsBtn"
@@ -40,7 +40,7 @@ const CollectiveInfo = () => {
 
   const { cid } = useParams()
 
-  const { collective, isCollectiveFound, isCollectiveLoading } = useCollectiveContext()
+  const { collective, isCollectiveFound, isCollectiveLoading, tokenPrice } = useCollectiveContext()
   const { address } = useAppContext()
 
   const loading = isCollectiveLoading
@@ -48,7 +48,7 @@ const CollectiveInfo = () => {
   const reloadPage = () => {
     window.location.reload()
   }
-
+  
   return (
     <div>
       <Helmet>
@@ -78,11 +78,11 @@ const CollectiveInfo = () => {
           loading={loading || !isCollectiveFound} />
         <Datarow title="Token" value={<Text size="sm">{`${collective?.symbol} | ${collective?.decimals}`}</Text>} loading={loading || !isCollectiveFound} />
         <Datarow title="Token Address" value={<Text size="sm">{collective?.token}</Text>} loading={loading || !isCollectiveFound} />
-        <Datarow title="Amount/Cycle" value={<Text size="sm">{collective?.cycle_amount}</Text>} loading={loading || !isCollectiveFound} />
+        <Datarow title="Amount/Cycle" value={<Text size="sm">{collective?.cycle_amount} {collective.symbol} | ${formatNumberInternational(BigNumber(collective.cycle_amount).multipliedBy(tokenPrice).toNumber())}</Text>} loading={loading || !isCollectiveFound} />
         <Datarow title="No. of Heroes" value={<Text size="sm">{collective?.hero_count}</Text>} loading={loading || !isCollectiveFound} />
         <Datarow title="No. of Cycles" value={<Text size="sm">{collective?.cycles_count}</Text>} loading={loading || !isCollectiveFound} />
         <Datarow title="Active Cycle" value={<Text size="sm">Cycle {collective?.active_cycle}</Text>} loading={loading || !isCollectiveFound} />
-        <Datarow title="Fine Amount" value={<Text size="sm">{collective?.fine}</Text>} loading={loading || !isCollectiveFound} />
+        <Datarow title="Fine Amount" value={<Text size="sm">{collective?.fine} {collective.symbol} | ${formatNumberInternational(BigNumber(collective.fine).multipliedBy(tokenPrice).toNumber())}</Text>} loading={loading || !isCollectiveFound} />
         <Datarow title="Start Date" value={<Text size="sm">{timeStampToDate(BigNumber(collective?.start_date).toNumber())?.toDateString() ?? ""}</Text>} loading={loading || !isCollectiveFound} />
         <Datarow title="Next Cycle Date" value="" loading={loading || !isCollectiveFound} />
         <Datarow title="Rules" value={<Text size="sm">{`${collective?.rule_1} | ${collective?.rule_2} | ${collective?.rule_3}`}</Text>} loading={loading || !isCollectiveFound} />

@@ -1,8 +1,10 @@
 import BigNumber from "bignumber.js"
 import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from "react"
 import { useParams } from "react-router-dom"
-import { bnCompare, bigintToShortStr, bigintToLongStrAddress } from "../configs/utils"
+import { bnCompare, bigintToShortStr, bigintToLongStrAddress, getRealPrice } from "../configs/utils"
 import { useAppContext } from "./AppProvider"
+import { CairoCustomEnum } from "starknet"
+import TOKENS from "../configs/tokens"
 
 const initialData = {
     raw_collective: null as any,
@@ -13,6 +15,7 @@ const initialData = {
     isMember: false,
     isOwner: false,
     loadingHeroes: false,
+    tokenPrice: null as any,
 }
 
 export const CollectiveContext = createContext(initialData)
@@ -36,8 +39,9 @@ const CollectiveProvider = (props: ICollectiveProvider) => {
     const [loadingHeroes, setLoadingHeroes] = useState(false)
     const [isMember, setIsMember] = useState(false)
     const [isOwner, setIsOwner] = useState(false)
+    const [tokenPrice, setTokenPrice] = useState<null | any>(null)
     const { cid } = useParams()
-    const { contract, address } = useAppContext()
+    const { contract, address, pragma_contract } = useAppContext()
 
 
     async function loadCollective() {
@@ -81,19 +85,27 @@ const CollectiveProvider = (props: ICollectiveProvider) => {
 
     async function loadHeroes() {
         setLoadingHeroes(true)
-        try {
-            if (contract) {
-                const res = await contract.get_collective_heroes(cid)
-                setHeroes(res)
-                checkIfMember(res)
-                setLoadingHeroes(false)
-            }
-        }
-        catch (error: any) {
-            console.error("Error loading collective heroes::- ", error)
+        if (contract) {
+            const res = await contract.get_collective_heroes(cid)
+            setHeroes(res)
+            checkIfMember(res)
             setLoadingHeroes(false)
         }
         setLoadingHeroes(false)
+    }
+
+    const getTokenPrice = async () => {
+        if (pragma_contract && collective) {
+            const pair: any = TOKENS.find(asset => asset.address.toLowerCase() === collective?.token.toLowerCase())
+            if (pair) {
+                const SPOTENTRY_ENUM = new CairoCustomEnum({
+                    SpotEntry: pair.pair_id
+                })
+                const res = await pragma_contract.get_data_median(SPOTENTRY_ENUM)
+                const price = getRealPrice(res)
+                setTokenPrice(price?.price)
+            }
+        }
     }
 
     function checkIfMember(heroes_: any) {
@@ -109,13 +121,18 @@ const CollectiveProvider = (props: ICollectiveProvider) => {
         heroes,
         isMember,
         loadingHeroes,
-        isOwner
-    }), [collective]);
+        isOwner,
+        tokenPrice
+    }), [collective, contract, tokenPrice]);
 
     useEffect(() => {
         loadCollective()
         loadHeroes()
     }, [cid, contract, address])
+
+    useEffect(() => {
+        getTokenPrice()
+    }, [collective, cid])
 
     return (
         <CollectiveContext.Provider value={contextValue}>

@@ -1,13 +1,14 @@
 import { ReactNode, createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { Contract } from 'starknet'
 import { connect, disconnect } from 'starknetkit'
-import { CONTRACT_ABI, CONTRACT_ADDRESS } from '../configs/config'
+import { CONTRACT_ABI, CONTRACT_ADDRESS, PRAGMA_ABI, PRAGMA_CONTRACT_ADDRESS } from '../configs/config'
 import { modals } from '@mantine/modals'
 import { Text } from '@mantine/core'
 import { useMediaQuery } from '@mantine/hooks'
 
 const initialData = {
     contract: null as any,
+    pragma_contract: null as any,
     account: null as any,
     address: null as any,
     connection: null as any,
@@ -28,6 +29,7 @@ interface IAppProvider {
 const AppProvider = ({ children }: IAppProvider) => {
 
     const [contract, setContract] = useState<null | any>()
+    const [pragma_contract, setPragmaContract] = useState<null | any>()
     const [connection, setConnection] = useState<null | any>();
     const [account, setAccount] = useState<null | any>();
     const [address, setAddress] = useState<null | any>("");
@@ -96,6 +98,8 @@ const AppProvider = ({ children }: IAppProvider) => {
     const makeContractConnection = () => {
         if (account) {
             const contract = new Contract(CONTRACT_ABI, CONTRACT_ADDRESS, account)
+            const pragma_contract = new Contract(PRAGMA_ABI, PRAGMA_CONTRACT_ADDRESS, account)
+            setPragmaContract(pragma_contract)
             setContract(contract)
         }
     }
@@ -115,12 +119,13 @@ const AppProvider = ({ children }: IAppProvider) => {
 
     const contextValue = useMemo(() => ({
         contract,
+        pragma_contract,
         account,
         address,
         connection,
         handleConnetWalletBtnClick,
         isSmallScreen,
-    }), [account, contract, address]);
+    }), [account, contract, address, pragma_contract]);
 
     useEffect(() => {
         const connectToStarknet = async () => {

@@ -10,12 +10,12 @@ import { Helmet } from "react-helmet";
 const Heroes = () => {
 
   const { cid } = useParams()
-
   const { collective, heroes, isMember, loadingHeroes } = useCollectiveContext()
 
   const reloadPage = () => {
     window.location.reload()
   }
+
   return (
     <>
 
@@ -30,7 +30,7 @@ const Heroes = () => {
           !isMember && !loadingHeroes && !collective?.has_started ? <JoinCollectiveBtn collective_id={cid} callBackFn={reloadPage} /> : null
         }
         {
-          loadingHeroes ? (
+          loadingHeroes && !heroes ? (
             <>
               {
                 Array(8).fill(1).map((_item: number, i: number) => (

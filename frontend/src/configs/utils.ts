@@ -38,18 +38,44 @@ export function bnCompare(bn: any, b: any) {
 }
 
 export function timeStampToDate(timestamp: number) {
-    if(!timestamp) return null
+    if (!timestamp) return null
     const timestampInMilliseconds = timestamp * 1000;
     const date = new Date(timestampInMilliseconds);
     return date;
 }
 
 
-export function getTwoAddressLetters(address: string){
+export function getTwoAddressLetters(address: string) {
     if (!address) return "0x"
-    return  address?.substring(0, 4).substring(2, 4) ?? "0x"
+    return address?.substring(0, 4).substring(2, 4) ?? "0x"
 }
 
 export const encoder = (str: string) => {
     return shortString.encodeShortString(str);
+}
+
+export function getRealPrice(val: any) {
+    let decimals = BigNumber(val.decimals).toNumber()
+    let ts = BigNumber(val.last_updated_timestamp).toNumber()
+    let real_price = {
+        price: BigNumber(val.price).dividedBy(10 ** decimals).toNumber(),
+        last_updated_timestamp: timeStampToDate(ts),
+        num_sources_aggregated: BigNumber(val.num_sources_aggregated).toNumber()
+    }
+    return real_price
+}
+
+export function formatNumberInternational(number: number) {
+    // Check if the Intl.NumberFormat is supported in the browser
+    const DECIMALS = 4
+    if (typeof Intl.NumberFormat === 'function') {
+        // Format the number using the "en-US" locale
+        const formatter = new Intl.NumberFormat('en-US', { minimumFractionDigits: DECIMALS, maximumFractionDigits: DECIMALS});
+        return formatter.format(number);
+    } else {
+        // Fallback for browsers that do not support Intl.NumberFormat
+        console.warn('Intl.NumberFormat is not supported in this browser. Fallback may not provide accurate formatting.');
+        // You can implement a custom fallback logic here if needed
+        return number.toLocaleString('en-US');
+    }
 }

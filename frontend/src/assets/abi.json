@@ -356,7 +356,7 @@
                     "outputs": [],
                     "state_mutability": "external"
                 },
-                {
+                { 
                     "type": "function",
                     "name": "register_collective",
                     "inputs": [

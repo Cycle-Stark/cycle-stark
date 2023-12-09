@@ -1,16 +1,18 @@
 import { Paper, Stack, Text, useMantineColorScheme } from '@mantine/core'
 import Hero from './Hero'
-import { bigintToLongStrAddress, convertToReadableTokens, isDarkMode } from '../../configs/utils'
+import { bigintToLongStrAddress, convertToReadableTokens, formatNumberInternational, isDarkMode } from '../../configs/utils'
+import BigNumber from 'bignumber.js'
 
 interface IContribution{
     hero_id: any
     amount: any,
     decimals: any,
     symbol: any
+    tokenPrice: any
 }
 
 const Contribution = (props: IContribution) => {
-    const {hero_id, amount, decimals, symbol} = props
+    const {hero_id, amount, decimals, symbol, tokenPrice} = props
     const {colorScheme} = useMantineColorScheme()
 
     return (
@@ -20,7 +22,7 @@ const Contribution = (props: IContribution) => {
             <Stack>
                 <Hero hero_address={bigintToLongStrAddress(hero_id)} />
                 <Text size='sm'>
-                    <strong>Amount</strong>: {convertToReadableTokens(amount, decimals)} {symbol}
+                    <strong>Amount</strong>: {convertToReadableTokens(amount, decimals)} {symbol} | ${formatNumberInternational(BigNumber(convertToReadableTokens(amount, decimals)).multipliedBy(tokenPrice).toNumber())}
                 </Text>
             </Stack>
         </Paper>
