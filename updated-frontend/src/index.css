@@ -1,0 +1,43 @@
+
+@font-face {
+  font-family: 'Bicubic';
+  src: url(/fonts/bicubik/Bicubik.otf) format("opentype");
+}
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+}
+
+body {
+  margin: 0;
+  background-color: #131419;
+  overflow-x: hidden;
+  font-family: Bicubic;
+}
+
+
+.main-holder {
+  position: relative;
+  border-radius: 20px;
+  padding: 100px;
+  /* z-index: 2; */
+  margin-inline: auto;
+  margin-block: 20px;
+  margin-bottom: 100px;
+  max-width: 1200px;
+  background: rgba(255, 255, 255, 0.842) !important;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: white;
+  min-height: 100vh;
+  pointer-events: all;
+}

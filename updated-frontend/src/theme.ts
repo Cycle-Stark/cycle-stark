@@ -1,0 +1,8 @@
+import { createTheme } from "@mantine/core";
+
+export const theme = createTheme({
+  /* Put your mantine theme override here */
+  primaryColor: 'indigo',
+  fontFamily: "Space Grotesk, sans-serif"
+  // fontFamily: 'Bicubik, sans-serif'
+});
