@@ -60,7 +60,7 @@ const SelectTokenModal = ({ select, selectedToken, seTokenPrice }: ISelectTokenM
                 title={(<Box >
                     <Group p={'md'} justify='space-between' align='center' className='w-100'>
                         <Title order={2} fw={500}>Select Token</Title>
-                        <ActionIcon variant='light'>
+                        <ActionIcon variant='light' onClick={close}>
                             <IconX />
                         </ActionIcon>
                     </Group>

@@ -64,7 +64,7 @@ const Collective = ({ collective }: ICollective) => {
                     </Group> */}
                     <Grid>
                         <Grid.Col span={4} px={'xs'}>
-                            <Stack className="h-100" align="center" justify="center">
+                            <Stack className="h-100" align="start" justify="start">
                                 <Avatar radius={'xl'} size={'lg'} tt={'capitalize'} mx={'auto'} src={asset?.icon}>
                                     {bigintToShortStr(collective?.name).substring(0, 2)}
                                 </Avatar>

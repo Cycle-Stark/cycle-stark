@@ -28,10 +28,10 @@ const TOKENS: Token[] = [
     {
         name: 'USDC',
         decimals: 6,
-        address: '0x001d5b64feabc8ac7c839753994f469704c6fabdd45c8fe6d26ed57b5eb79057',
+        address: '0x1d5b64feabc8ac7c839753994f469704c6fabdd45c8fe6d26ed57b5eb79057',
         pair_id: 'USDC/USD',
         symbol: 'USDC',
-        icon: 'https://cryptocurrencyliveprices.com/img/eth-ethereum.png'
+        icon: 'https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=029'
     },
     {
         name: 'USDT',
@@ -44,7 +44,7 @@ const TOKENS: Token[] = [
     {
         name: 'Dai Stable Coin',
         decimals: 18,
-        address: '0x0278f24c3e74cbf7a375ec099df306289beb0605a346277d200b791a7f811a19',
+        address: '0x278f24c3e74cbf7a375ec099df306289beb0605a346277d200b791a7f811a19',
         pair_id: 'DAI/USD',
         symbol: 'DAI',
         icon: 'https://cryptocurrencyliveprices.com/img/dai-dai.png'

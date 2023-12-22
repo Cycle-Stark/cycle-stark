@@ -27,3 +27,34 @@ Cycle Stark incorporates a blacklisting feature to deter premature exits from th
 At the conclusion of each cycle, participants have the option to withdraw their locked assets or leave them for the subsequent collective they may choose to join. Payouts are directed to individual participant accounts within the system, providing flexibility for members to decide when and how to access their funds.
 
 The motivation behind developing Cycle Stark is to create an inclusive financial environment that transcends geographical and socioeconomic barriers. This platform aims to empower individuals by enabling them to collectively accumulate larger sums over time, addressing the challenge of having insufficient funds for significant purchases. Leveraging Starknet's advantages, such as reduced fees, enhanced security, and efficient transactions, Cycle Stark strives to offer a seamless and reliable financial collaboration experience for its users.
+
+
+Get Designer
+Hello Fiverr community! I'm in the early stages of developing a unique project called CycleStark, a decentralized cyclical funding platform on Starknet's Layer 2 for Ethereum. I'm looking for a talented web developer who can bring this vision to life with a user-friendly and visually appealing website.
+
+Key Requirements:
+
+Website to be built on ReactJs using Vite (Typescript language)
+
+Responsive Design: Create a responsive and intuitive website to ensure a smooth user experience across devices.
+
+Cyclical Funding Display: Implement a dynamic display of cyclical funding cycles, showcasing the platform's unique features.
+
+User Dashboard: Develop a user-friendly dashboard for heroes to track their collectives, contributions, and upcoming cycles.
+
+What I'm Looking For:
+I'm seeking a skilled developer who is not only proficient in web development but also has a passion for creating innovative platforms. If you're excited about decentralized finance, community empowerment, and have the technical expertise to bring this project to life, I'd love to hear from you!
+
+More information:
+
+Visit a working demo here: https://cyclestark.supercodehive.com/
+
+If you don't know anythin about crpto ie how to use metamask and other webwallets you can take a look at the different pages to give you guidance on design but you will still need argentX or braavos wallet. Install ArgentX, just search fo ArgentX on chrome or brave. Once you have it installed, follow the extension procedure to create and secure your account. Then proceed to switch network to testnet on the top right corner to testnet.
+
+Create a new account here on testnet, and click on add funds, then click on Get test ETH, you will be redirected to a faucet page where you need to pass in your address, open argentX and click on the address on testnet to copy the address. 
+
+Once you obtain those tokens, proceed to connect your wallet and start moving around the site.
+
+Why cycle stark
+
+Cycle Stark, an open-source decentralized finance (DeFi) platform built on Starknet Chain, significantly contributes to the evolution and enhancement of the wider Ethereum and Web3 ecosystem. By leveraging Starknet's L2 scaling solution, the platform addresses scalability challenges, reduces transaction fees, and enhances overall performance, thus promoting efficiency within the Ethereum blockchain. The commitment to smart contract security, evidenced by a locking mechanism and penalties for non-compliance, sets a standard for reliability in decentralized financial interactions. Additionally, Cycle Stark's emphasis on financial inclusivity, where individuals from different geographies form collectives and collaboratively manage funds, aligns with the broader goals of Ethereum and Web3 by empowering users globally. This global approach not only fosters a culture of experimentation and collaboration but also significantly increases onboarding to Web3, contributing to the ongoing evolution of the decentralized ecosystem.

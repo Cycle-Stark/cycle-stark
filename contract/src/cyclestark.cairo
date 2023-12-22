@@ -225,7 +225,9 @@ mod CycleStark {
 
             if contributions_count > 0 {
                 loop {
-                    let contribution = self.cycle_contributions.read((collective_id, cycle_id, count));
+                    let contribution = self
+                        .cycle_contributions
+                        .read((collective_id, cycle_id, count));
                     contributions.append(contribution);
                     count += 1;
                     if count > contributions_count {
@@ -357,8 +359,8 @@ mod CycleStark {
 
         fn start_cycle(ref self: ContractState, collective_id: CollectiveID) {
             let mut s_c: StarkCollective = self.stark_collectives.read(collective_id);
-            let receiver_hero = self.get_receiver_address(collective_id);
             if s_c.cycles_count < 1 {
+                let receiver_hero = self.collective_heroes.read((collective_id, 1)); 
                 s_c.cycles_count += 1;
                 let mut cycle: CollectiveCycle = CollectiveCycle {
                     id: s_c.cycles_count,
@@ -370,9 +372,13 @@ mod CycleStark {
                 self.collective_cycles.write((collective_id, s_c.cycles_count), cycle);
                 self.stark_collectives.write(collective_id, s_c);
             } else if s_c.cycles_count <= s_c.hero_count {
-                let active_cycle = self.collective_cycles.read((collective_id, s_c.active_cycle));
+                let next_active_cycle = s_c.cycles_count + 1;
+                let receiver_hero = self.collective_heroes.read((collective_id, next_active_cycle));
+                let active_cycle = self
+                    .collective_cycles
+                    .read((collective_id, next_active_cycle - 1));
                 if active_cycle.has_ended {
-                    s_c.cycles_count += 1;
+                    s_c.cycles_count = next_active_cycle;
                     let mut cycle: CollectiveCycle = CollectiveCycle {
                         id: s_c.cycles_count,
                         has_ended: false,

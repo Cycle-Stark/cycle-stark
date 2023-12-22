@@ -34,3 +34,13 @@ url = "http://localhost:5050/rpc"
 account = "argent_account"
 accounts-file = "/home/dalmas/.starknet_accounts/starknet_open_zeppelin_accounts.json"
 url = "https://starknet-goerli.infura.io/v3/958e1b411a40480eacb8c0f5d640a8ec"
+
+[tool.sncast.new_account]
+account = "new_account"
+accounts-file = "/home/dalmas/.starknet_accounts/starknet_open_zeppelin_accounts.json"
+url = "http://localhost:5050/rpc"
+
+[tool.sncast.argent_account1]
+account = "argent_account1"
+accounts-file = "/home/dalmas/.starknet_accounts/starknet_open_zeppelin_accounts.json"
+url = "https://starknet-goerli.infura.io/v3/958e1b411a40480eacb8c0f5d640a8ec"

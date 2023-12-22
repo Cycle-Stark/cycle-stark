@@ -1,14 +1,31 @@
-import { Blockquote, Box, Button, Card, Center, Container, Grid, Image, Stack, Text, Timeline, Title, useMantineColorScheme } from "@mantine/core"
+import { Blockquote, Box, Button, Card, Center, Container, Grid, Group, Image, Stack, Text, Timeline, Title, useMantineColorScheme } from "@mantine/core"
 import { isDarkMode } from "../configs/utils"
 import { useAppContext } from "../providers/AppProvider"
 import { IconInfoCircle } from "@tabler/icons-react"
 import { AssetPreview } from "../components/tokens/SelectTokenModal"
+import { CallData, uint256 } from "starknet"
+import { useEffect } from "react"
 
 
 
 const Home = () => {
     const { colorScheme } = useMantineColorScheme()
     const { isSmallScreen } = useAppContext()
+
+    function compile() {
+        let res = CallData.compile({
+            _name: 'HEXCON',
+            _symbol: 'HEX',
+            _decimals: 10,
+            _initial_supply: uint256.bnToUint256(BigInt(10000000000) * BigInt(10)),
+            recipient: 0x02FEFe559db7F64d20296e7ca4aca8d864b79bbE1cb8A31502d8986f8ad5Ba0B
+        })
+        console.log(res)
+    }
+
+    useEffect(() => {
+        compile()
+    }, [])
 
     return (
         <>
@@ -27,6 +44,10 @@ const Home = () => {
                                 <Title order={2} size={32} className="custom-title" style={{
                                     fontWeight: 600
                                 }}>Empowering Heroes on Starknet for Collective Funding</Title>
+                                <Group py={'20px'} mt={'50px'} justify="center">
+                                    <Image src={`/images/starknet/${isDarkMode(colorScheme) ? 'logo2-dark.png' : 'logo2.png'}`} w={'200px'} />
+                                    <Image src={`/images/pragma-logo.svg`} w={'200px'} />
+                                </Group>
                             </Stack>
                         </Grid.Col>
                         <Grid.Col span={{ md: 6 }}>
@@ -40,7 +61,7 @@ const Home = () => {
                         Cycle Stark is running on Testnet. To work around it well, we encourage you to use your PC and install ArgentX or Braavos wallets to interact with it on testnet
                     </Blockquote>
                 </Container>
-                <Container py={{xs: '50px', md: '200px', }}>
+                <Container py={{ xs: '50px', md: '200px', }}>
                     <AssetPreview />
                 </Container>
                 <Box py={50}>

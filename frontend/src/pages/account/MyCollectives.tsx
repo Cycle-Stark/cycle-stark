@@ -39,7 +39,7 @@ const MyCollectives = () => {
                     <Grid>
                         {
                             Array(8).fill(1).map((_item: number, i: number) => (
-                                <Grid.Col key={`collective_${i}`} span={{ xl: 3, md: 4, sm: 6, xs: 12 }} mb="lg">
+                                <Grid.Col key={`collective_${i}`} span={{ xl: 4, md: 4, sm: 6, xs: 12 }} mb="lg">
                                     <CollectiveSkeleton />
                                 </Grid.Col>
                             ))
@@ -58,7 +58,7 @@ const MyCollectives = () => {
             <Grid>
                 {
                     collectives?.map((collective: any, i: number) => (
-                        <Grid.Col key={`collective_${collective?.id?.toString()}_${i}`} span={{ xl: 3, md: 4, sm: 6, xs: 12 }} py={40} pl={20}>
+                        <Grid.Col key={`collective_${collective?.id?.toString()}_${i}`} span={{ xl: 4, md: 4, sm: 6, xs: 12 }} py={40} pl={20}>
                             <Collective collective={collective} />
                         </Grid.Col>
                     ))
