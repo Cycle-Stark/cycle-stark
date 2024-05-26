@@ -15,28 +15,36 @@ import Chat from "./pages/collectives/view/Chat";
 import CreateCollective from "./pages/collectives/CreateCollective";
 import Home from "./pages/Home";
 import MyCollectives from "./pages/account/MyCollectives";
+import { TokenKitWrapper } from 'starknet-tokenkit'
+import 'starknet-tokenkit/dist/index.css'
 
 export default function App() {
   // ERC 20 transfer
   return (
     <>
-      <BrowserRouter>
-        <MainLayout>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/collectives" element={<Collectives />} />
-            <Route path="/create/collective" element={<CreateCollective />} />
-            <Route path="/my-collectives" element={<MyCollectives />} />
-            <Route path="/collectives/:cid" element={<SingleCollective />}>
-              <Route path="/collectives/:cid/heroes" element={<Heroes />} />
-              <Route path="/collectives/:cid/cycles" element={<Cycles />} />
-              <Route path="/collectives/:cid/info" element={<CollectiveInfo />} />
-              <Route path="/collectives/:cid/chat" element={<Chat />} />
-            </Route>
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </MainLayout>
-      </BrowserRouter>
+      <TokenKitWrapper
+        network="SN_SEPOLIA" // Required - SN_MAIN | SN_SEPOLIA
+        sepoliaNodeURL="https://starknet-sepolia.infura.io/v3/958e1b411a40480eacb8c0f5d640a8ec" // Required
+        mainnetNodeURL="https://starknet-mainnet.infura.io/v3/958e1b411a40480eacb8c0f5d640a8ec" // Required
+      >
+        <BrowserRouter>
+          <MainLayout>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/collectives" element={<Collectives />} />
+              <Route path="/create/collective" element={<CreateCollective />} />
+              <Route path="/my-collectives" element={<MyCollectives />} />
+              <Route path="/collectives/:cid" element={<SingleCollective />}>
+                <Route path="/collectives/:cid/heroes" element={<Heroes />} />
+                <Route path="/collectives/:cid/cycles" element={<Cycles />} />
+                <Route path="/collectives/:cid/info" element={<CollectiveInfo />} />
+                <Route path="/collectives/:cid/chat" element={<Chat />} />
+              </Route>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </MainLayout>
+        </BrowserRouter>
+      </TokenKitWrapper>
     </>
   );
 }

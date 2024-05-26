@@ -1,17 +1,18 @@
-import { ActionIcon, Box, Button, Center, Container, Grid, Group, LoadingOverlay, MantineTheme, NumberInput, Stack, Text, TextInput, Title, useMantineTheme } from "@mantine/core"
+import { ActionIcon, Avatar, Box, Button, Center, Container, Grid, Group, LoadingOverlay, MantineTheme, NumberInput, Stack, Text, TextInput, Title, useMantineTheme } from "@mantine/core"
 import { DateTimePicker } from '@mantine/dates';
 import { IconAlertTriangle, IconInfoCircle, IconPlus, IconTrash } from "@tabler/icons-react";
 import { useForm } from "@mantine/form"
 import { useState } from "react";
 import { showNotification } from "@mantine/notifications";
 import { useAppContext } from "../../providers/AppProvider";
-import { formatNumberInternational } from "../../configs/utils";
+import { formatNumberInternational, limitChars } from "../../configs/utils";
 import BigNumber from "bignumber.js";
-import SelectTokenModal from "../../components/tokens/SelectTokenModal";
-import TOKENS, { Token } from "../../configs/tokens";
+// import SelectTokenModal from "../../components/tokens/SelectTokenModal";
+// import TOKENS, { Token } from "../../configs/tokens";
 import CustomBox from "../../components/others/CustomBox";
-import {motion} from 'framer-motion'
+import { motion } from 'framer-motion'
 import { slideAnimation } from "../../configs/motion";
+import { IToken, SelectTokenModal } from "starknet-tokenkit";
 
 
 interface IColorText {
@@ -49,13 +50,13 @@ const CreateCollective = () => {
     const theme = useMantineTheme()
     const { contract } = useAppContext()
 
-    const form = useForm({
+    const form = useForm<any>({
         initialValues: {
             rules: Array(1).fill(RULE),
             name: "",
             aim: "",
             // token: "0x049D36570D4e46f48e99674bd3fcc84644DdD6b96F7C741B1562B82f9e004dC7",
-            token: TOKENS[0],
+            token: null,
             amt: 0,
             fine: 0,
             start_date: "",
@@ -180,7 +181,7 @@ const CreateCollective = () => {
         }
     }
 
-    const selectToken = (token: Token) => {
+    const selectToken = (token: IToken) => {
         form.setFieldValue('token', token)
     }
 
@@ -199,55 +200,97 @@ const CreateCollective = () => {
         return null
     }
 
+    const stylingObject = {
+        r: "20px",
+        textColor: "black",
+        headerFooterBg: "rgba(0, 0, 0, 0.1)",
+        backgroundColor: "white",
+        fontFamily: "Space Grotesk, sans-serif",
+        searchBackground: "rgba(0, 0, 0, 0.1)",
+        searchColor: "black",
+        searchBorderColor: "rgba(14, 6, 46, 0)",
+        searchFocusBorderColor: "violet",
+        primaryColor: "violet",
+    }
+
     return (
         <>
-        <motion.div {...slideAnimation('left')}>
-        <Box maw={'600px'} mx="auto">
-            <CustomBox>
-                <Stack>
-                    <Title order={1} className="custom-title" style={{ textAlign: "center" }}>Register New Collective</Title>
-                    <form onSubmit={form.onSubmit((_values) => cerateCollective())} style={{ position: "relative" }}>
-                        <LoadingOverlay visible={loading} />
-                        <Container>
-                            <Grid>
-                                <Grid.Col span={{ md: 12 }}>
-                                    <TextInput label={"Collective Name"} radius={'md'} placeholder="STRK Collective" styles={styles} {...form.getInputProps('name')}
-                                        rightSection={<ColorText theme={theme} len={form.values.name.length} />} />
-                                </Grid.Col>
-                                <Grid.Col span={{ md: 12 }}>
-                                    <TextInput label={"Collective Aim"} radius={'md'} placeholder="Buy Land for Each other" styles={styles} {...form.getInputProps('aim')}
-                                        rightSection={<ColorText theme={theme} len={form.values.aim.length} />} />
-                                </Grid.Col>
-                                <Grid.Col span={{ md: 12 }}>
-                                    <Stack>
-                                        <Text>Rules</Text>
-                                        {
-                                            form.values.rules.map((_rule: any, i: number) => (
-                                                <Grid key={`rule_${i}`}>
-                                                    <Grid.Col span={{ xs: 10 }}>
-                                                        <TextInput label={`Rule # ${i + 1}.`} radius={'md'} placeholder="Less than 30 characters" styles={styles} {...form.getInputProps(`rules.${i}.rule`)}
-                                                            rightSection={<ColorText theme={theme} len={form.values.rules[i].rule.length} />} />
-                                                    </Grid.Col>
-                                                    <Grid.Col span={{ xs: 2 }}>
-                                                        <Center className="h-100">
-                                                            <ActionIcon color="red" variant="light" disabled={i === 0} radius={"lg"} size={'lg'} onClick={() => removeRule(i)}>
-                                                                <IconTrash size={22} />
-                                                            </ActionIcon>
-                                                        </Center>
-                                                    </Grid.Col>
-                                                </Grid>
-                                            ))
-                                        }
-                                        <Group justify="right">
-                                            <Button size="sm" variant="outline" disabled={form.values.rules.length === 3} radius={'md'} leftSection={<IconPlus />} onClick={addRule}>Add</Button>
-                                        </Group>
-                                    </Stack>
-                                </Grid.Col>
-                                <Grid.Col span={12}>
-                                    <Text fw={500} fs={'md'}>Select Token</Text>
-                                    <SelectTokenModal selectedToken={form.values.token} select={selectToken} seTokenPrice={seTokenPrice} />
-                                </Grid.Col>
-                                {/* <Grid.Col span={{ md: 4 }}>
+            <motion.div {...slideAnimation('left')}>
+                <Box maw={'600px'} mx="auto">
+                    <CustomBox>
+                        <Stack>
+                            <Title order={1} className="custom-title" style={{ textAlign: "center" }}>Register New Collective</Title>
+                            <form onSubmit={form.onSubmit((_values) => cerateCollective())} style={{ position: "relative" }}>
+                                <LoadingOverlay visible={loading} />
+                                <Container>
+                                    <Grid>
+                                        <Grid.Col span={{ md: 12 }}>
+                                            <TextInput label={"Collective Name"} radius={'md'} placeholder="STRK Collective" styles={styles} {...form.getInputProps('name')}
+                                                rightSection={<ColorText theme={theme} len={form.values.name.length} />} />
+                                        </Grid.Col>
+                                        <Grid.Col span={{ md: 12 }}>
+                                            <TextInput label={"Collective Aim"} radius={'md'} placeholder="Buy Land for Each other" styles={styles} {...form.getInputProps('aim')}
+                                                rightSection={<ColorText theme={theme} len={form.values.aim.length} />} />
+                                        </Grid.Col>
+                                        <Grid.Col span={{ md: 12 }}>
+                                            <Stack>
+                                                <Text>Rules</Text>
+                                                {
+                                                    form.values.rules.map((_rule: any, i: number) => (
+                                                        <Grid key={`rule_${i}`}>
+                                                            <Grid.Col span={{ xs: 10 }}>
+                                                                <TextInput label={`Rule # ${i + 1}.`} radius={'md'} placeholder="Less than 30 characters" styles={styles} {...form.getInputProps(`rules.${i}.rule`)}
+                                                                    rightSection={<ColorText theme={theme} len={form.values.rules[i].rule.length} />} />
+                                                            </Grid.Col>
+                                                            <Grid.Col span={{ xs: 2 }}>
+                                                                <Center className="h-100">
+                                                                    <ActionIcon color="red" variant="light" disabled={i === 0} radius={"lg"} size={'lg'} onClick={() => removeRule(i)}>
+                                                                        <IconTrash size={22} />
+                                                                    </ActionIcon>
+                                                                </Center>
+                                                            </Grid.Col>
+                                                        </Grid>
+                                                    ))
+                                                }
+                                                <Group justify="right">
+                                                    <Button size="sm" variant="outline" disabled={form.values.rules.length === 3} radius={'md'} leftSection={<IconPlus />} onClick={addRule}>Add</Button>
+                                                </Group>
+                                            </Stack>
+                                        </Grid.Col>
+                                        <Grid.Col span={12}>
+                                            <Text fw={500} fs={'md'}>Select Token</Text>
+                                            <SelectTokenModal selectedToken={form.values.token} callBackFunc={selectToken} themeObject={stylingObject}>
+                                                <Box p="md" bg={theme?.colors.indigo[5]} style={{
+                                                    borderRadius: "10px",
+                                                    cursor: "pointer"
+                                                }}>
+                                                    {
+                                                        form.values.token ? (
+                                                            <Group>
+                                                                <Avatar src={form?.values?.token?.icon}>
+                                                                    {limitChars(form?.values?.token?.symbol ?? "ST", 2, false)}
+                                                                </Avatar>
+                                                                <Stack gap={2}>
+                                                                    <Text size="sm">{form.values?.token?.name}</Text>
+                                                                    <Text size="md" fw={500}>{form.values?.token?.symbol}</Text>
+                                                                </Stack>
+                                                            </Group>
+                                                        ) : (
+                                                            <Group>
+                                                                <Avatar src={form?.values?.token?.icon}>
+                                                                    {limitChars(form?.values?.token?.symbol ?? "ST", 2, false)}
+                                                                </Avatar>
+                                                                <Stack gap={2}>
+                                                                    <Text size="sm">Select Token</Text>
+                                                                </Stack>
+                                                            </Group>
+                                                        )
+                                                    }
+                                                </Box>
+                                            </SelectTokenModal>
+                                            {/* <SelectTokenModal selectedToken={form.values.token} select={selectToken} seTokenPrice={seTokenPrice} /> */}
+                                        </Grid.Col>
+                                        {/* <Grid.Col span={{ md: 4 }}>
                             <TextInput label={"Token"} radius={'md'} placeholder="Token Address: 0x00fdkb..." {...form.getInputProps('token')} styles={styles} />
                         </Grid.Col>
                         <Grid.Col span={{ md: 4 }}>
@@ -256,27 +299,27 @@ const CreateCollective = () => {
                         <Grid.Col span={{ md: 4 }}>
                             <TextInput label={"Token Symbol"} radius={'md'} placeholder="Token Symbol: ETH" {...form.getInputProps('symbol')} styles={styles} />
                         </Grid.Col> */}
-                                <Grid.Col span={{ md: 6 }}>
-                                    <NumberInput label={`Amount / cycle ≈ $${formatNumberInternational(calculateAmt(form.values.amt) ?? 0)}`} hideControls radius={'md'} placeholder="200 STRK" {...form.getInputProps('amt')} styles={styles} />
-                                </Grid.Col>
-                                <Grid.Col span={{ md: 6 }}>
-                                    <NumberInput label={`Fine / cycle≈ $${formatNumberInternational(calculateAmt(form.values.fine) ?? 0)}`} hideControls radius={'md'} placeholder="20 STRK" {...form.getInputProps('fine')} styles={styles} />
-                                </Grid.Col>
-                                <Grid.Col span={{ md: 4 }}>
-                                    <DateTimePicker label={"Start Date"} radius={'md'} minDate={new Date()} placeholder="Start Date" {...form.getInputProps('start_date')} clearable styles={styles} />
-                                </Grid.Col>
-                                <Grid.Col span={12}>
-                                    <Group justify="center" py="lg">
-                                        <Button leftSection={<IconPlus stroke={1.5} />} type="submit" size="lg" variant="outline" radius={"xl"}>Create Collective</Button>
-                                    </Group>
-                                </Grid.Col>
-                            </Grid>
-                        </Container>
-                    </form>
-                </Stack>
-            </CustomBox>
-        </Box>
-        </motion.div>
+                                        <Grid.Col span={{ md: 6 }}>
+                                            <NumberInput label={`Amount / cycle ≈ $${formatNumberInternational(calculateAmt(form.values.amt) ?? 0)}`} hideControls radius={'md'} placeholder="200 STRK" {...form.getInputProps('amt')} styles={styles} />
+                                        </Grid.Col>
+                                        <Grid.Col span={{ md: 6 }}>
+                                            <NumberInput label={`Fine / cycle≈ $${formatNumberInternational(calculateAmt(form.values.fine) ?? 0)}`} hideControls radius={'md'} placeholder="20 STRK" {...form.getInputProps('fine')} styles={styles} />
+                                        </Grid.Col>
+                                        <Grid.Col span={{ md: 4 }}>
+                                            <DateTimePicker label={"Start Date"} radius={'md'} minDate={new Date()} {...form.getInputProps('start_date')} clearable styles={styles} />
+                                        </Grid.Col>
+                                        <Grid.Col span={12}>
+                                            <Group justify="center" py="lg">
+                                                <Button leftSection={<IconPlus stroke={1.5} />} type="submit" size="lg" variant="outline" radius={"xl"}>Create Collective</Button>
+                                            </Group>
+                                        </Grid.Col>
+                                    </Grid>
+                                </Container>
+                            </form>
+                        </Stack>
+                    </CustomBox>
+                </Box>
+            </motion.div>
         </>
     )
 }
