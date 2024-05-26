@@ -3809,10 +3809,10 @@ standard-as-callback@^2.1.0:
   resolved "https://registry.yarnpkg.com/standard-as-callback/-/standard-as-callback-2.1.0.tgz#8953fc05359868a77b5b9739a665c5977bb7df45"
   integrity sha512-qoRRSyROncaz1z0mvYqIE4lCd9p2R90i6GxW3uZv5ucSu8tU7B5HXUP1gG8pVZsYNVaXjk8ClXHPttLyxAL48A==
 
-starknet-tokenkit@^2.6.1:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/starknet-tokenkit/-/starknet-tokenkit-2.6.1.tgz#d02ace57e91941830da9c9342e3c968b5ac761a1"
-  integrity sha512-oyxZDUKYibt26ea12denLwYyf72WICXGD7cWnCZ9q2/XTxCrMqx13qFnPvwyofWuOxnOkLLWKO9iSFCCWFGjcA==
+starknet-tokenkit@^2.6.4:
+  version "2.6.4"
+  resolved "https://registry.yarnpkg.com/starknet-tokenkit/-/starknet-tokenkit-2.6.4.tgz#a50690d42be5282b1a9e029cc5da68a39b49c68e"
+  integrity sha512-YITTqgoiXZBzrT5umfOzAi7UkIgsMKM67pXkiof/uPROxVxoYXzT0eZLoVmk5FBLaYR/igCP7Mf6MBpM6YL7ng==
   dependencies:
     bignumber.js "^9.1.2"
     dexie "^3.2.5"

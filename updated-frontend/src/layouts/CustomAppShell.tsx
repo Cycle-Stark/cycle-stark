@@ -22,7 +22,7 @@ const CustomAppShell = (props: ICustomAppShell) => {
 
     return (
         <AppShell header={{ height: { base: 60, md: 80 } }}>
-            <AppShell.Header zIndex={1}>
+            <AppShell.Header>
                 <Container size={'xl'} className='h-100'>
                     <Group align='center' className='h-100' justify='space-between'>
                         <motion.div {...slideAnimation('top')}>
