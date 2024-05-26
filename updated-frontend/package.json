@@ -31,7 +31,7 @@
     "react-helmet": "^6.1.0",
     "react-router-dom": "^6.17.0",
     "starknet": "^5.19.5",
-    "starknet-tokenkit": "^2.6.4",
+    "starknet-tokenkit": "^2.6.6",
     "starknetkit": "^1.0.12",
     "three": "0.153.0"
   },
