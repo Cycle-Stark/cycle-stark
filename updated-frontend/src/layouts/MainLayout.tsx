@@ -5,19 +5,19 @@ import AppProvider from "../providers/AppProvider";
 import { ModalsProvider } from '@mantine/modals';
 import CustomAppShell from "./CustomAppShell";
 import MyCanvas from "../components/MyCanvas";
-import {AnimatePresence} from 'framer-motion'
+import { AnimatePresence } from 'framer-motion'
 
 
 const MainLayout = (props: any) => {
     const { children } = props
     return (
         <>
-            <MyCanvas />
+            {/* <MyCanvas /> */}
             {/* <div className='main-holder'> */}
             <div style={{
                 transition: 'all 0.05s linear'
             }}>
-            <AnimatePresence>
+                {/* <AnimatePresence> */}
                 <MantineProvider theme={theme} defaultColorScheme="light">
                     <ModalsProvider>
                         <AppProvider>
@@ -28,7 +28,7 @@ const MainLayout = (props: any) => {
                         </AppProvider>
                     </ModalsProvider>
                 </MantineProvider>
-                </AnimatePresence>
+                {/* </AnimatePresence> */}
             </div>
         </>
     )

@@ -9,7 +9,7 @@ import pragma_abi from '../assets/pragmaabi.json'
 const ACCOUNT_ADDRESS = "0x77a6390ab3dc3045df373b93bf8b93899c3ad5111da9b66c54b62ddc98e7d4"
 
 // const CONTRACT_ADDRESS = "0x010a09eb11dd5cc68012039a1923209413a96eafdefd635ac406231627464328" // main contract address
-const CONTRACT_ADDRESS = "0x317b1dfe90ab699ee810138cc1d5b3958a3f1e0cc5c58bb17f69fd6be501670"
+const CONTRACT_ADDRESS = "0x675b591c094a9d5465be10a57c75f9014aed9a3b7f07a0bc7ff22000c90b756"
 const CONTRACT_ABI = abi
 const ERC20_ABI = erc20abi
 // Pragma configs

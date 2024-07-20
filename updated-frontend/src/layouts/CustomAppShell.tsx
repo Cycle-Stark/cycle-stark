@@ -21,7 +21,13 @@ const CustomAppShell = (props: ICustomAppShell) => {
     const matches = useMediaQuery('(max-width: 768px)');
 
     return (
-        <AppShell header={{ height: { base: 60, md: 80 } }}>
+        <AppShell bg={'#05080e00'} header={{ height: { base: 60, md: 80 } }}
+        styles={{
+            main: {
+                background: "#05080e00"
+            }
+        }}
+        >
             <AppShell.Header>
                 <Container size={'xl'} className='h-100'>
                     <Group align='center' className='h-100' justify='space-between'>

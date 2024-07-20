@@ -185,9 +185,9 @@ const CreateCollective = () => {
         form.setFieldValue('token', token)
     }
 
-    const seTokenPrice = (price: number) => {
-        form.setFieldValue('token_price', price)
-    }
+    // const seTokenPrice = (price: number) => {
+    //     form.setFieldValue('token_price', price)
+    // }
 
     // 2 ETH -> 2000000000000000000
     // 0.000002 ETH-> 20000000000000
@@ -198,19 +198,6 @@ const CreateCollective = () => {
             return amt
         }
         return null
-    }
-
-    const stylingObject = {
-        r: "20px",
-        textColor: "black",
-        headerFooterBg: "rgba(0, 0, 0, 0.1)",
-        backgroundColor: "white",
-        fontFamily: "Space Grotesk, sans-serif",
-        searchBackground: "rgba(0, 0, 0, 0.1)",
-        searchColor: "black",
-        searchBorderColor: "rgba(14, 6, 46, 0)",
-        searchFocusBorderColor: "violet",
-        primaryColor: "violet",
     }
 
     return (
@@ -259,7 +246,7 @@ const CreateCollective = () => {
                                         </Grid.Col>
                                         <Grid.Col span={12}>
                                             <Text fw={500} fs={'md'}>Select Token</Text>
-                                            <SelectTokenModal selectedToken={form.values.token} callBackFunc={selectToken} themeObject={stylingObject}>
+                                            <SelectTokenModal selectedToken={form.values.token} callBackFunc={selectToken} animation="fade">
                                                 <Box p="md" bg={theme?.colors.indigo[5]} style={{
                                                     borderRadius: "10px",
                                                     cursor: "pointer"
