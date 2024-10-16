@@ -19,10 +19,11 @@ mod CycleStark {
     };
 
 
-    // #[derive(Drop)]
+    // #[derive(Drop)] 
     #[storage]
     struct Storage {
         stark_heroes: LegacyMap<HeroID, StarkHero>,
+        // stark_heroes_mapper: LegacyMap<u256, HeroID>,
         heroes_count: u256,
         collectives_count: u256,
         stark_collectives: LegacyMap<CollectiveID, StarkCollective>,
@@ -111,7 +112,7 @@ mod CycleStark {
         amount: u256
     }
 
-    #[external(v0)]
+    #[abi(embed_v0)]
     impl HelperFunctionsImpl of IHelperFunctions<ContractState> {
         fn get_heroes_count(self: @ContractState) -> u256 {
             self.heroes_count.read()
@@ -217,7 +218,7 @@ mod CycleStark {
             self: @ContractState, collective_id: CollectiveID, cycle_id: CycleID
         ) -> Array<CycleContribution> {
             let mut contributions = ArrayTrait::<CycleContribution>::new();
-            let s_c = self.stark_collectives.read(collective_id);
+            // let _s_c = self.stark_collectives.read(collective_id);
             let cycle = self.collective_cycles.read((collective_id, cycle_id));
 
             let contributions_count = cycle.contributions_count;
@@ -239,7 +240,7 @@ mod CycleStark {
         }
     }
 
-    #[external(v0)]
+    #[abi(embed_v0)]
     impl CycleStarkImpl of ICycleStark<ContractState> {
         fn register_account(ref self: ContractState) {
             let hero_address: ContractAddress = get_caller_address();
@@ -360,7 +361,7 @@ mod CycleStark {
         fn start_cycle(ref self: ContractState, collective_id: CollectiveID) {
             let mut s_c: StarkCollective = self.stark_collectives.read(collective_id);
             if s_c.cycles_count < 1 {
-                let receiver_hero = self.collective_heroes.read((collective_id, 1)); 
+                let receiver_hero = self.collective_heroes.read((collective_id, 1));
                 s_c.cycles_count += 1;
                 let mut cycle: CollectiveCycle = CollectiveCycle {
                     id: s_c.cycles_count,
@@ -421,7 +422,7 @@ mod CycleStark {
 
         fn get_receiver_address(ref self: ContractState, collective_id: CollectiveID) -> HeroID {
             let mut s_c: StarkCollective = self.stark_collectives.read(collective_id);
-            let player = Option::<u32>::None;
+            // let player = Option::<u32>::None;
             let active_hero_address = self
                 .collective_heroes
                 .read((collective_id, s_c.active_cycle));
@@ -431,7 +432,7 @@ mod CycleStark {
         fn remit(ref self: ContractState, collective_id: CollectiveID) {
             let mut s_c: StarkCollective = self.stark_collectives.read(collective_id);
             let active_hero_address = self.get_receiver_address(collective_id);
-            let contract_address = get_contract_address();
+            // let contract_address = get_contract_address();
             let mut active_cycle = self.collective_cycles.read((collective_id, s_c.active_cycle));
 
             if active_cycle.contributions_count == s_c.hero_count {
@@ -448,3 +449,5 @@ mod CycleStark {
         }
     }
 }
+
+
